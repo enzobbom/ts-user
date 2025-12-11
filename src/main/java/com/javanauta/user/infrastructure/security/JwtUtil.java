@@ -13,7 +13,7 @@ import java.util.Date;
 public class JwtUtil {
 
     // Secret key used to sign and verify JWT tokens
-    private final String secretKey = "sua-chave-secreta-super-segura-que-deve-ser-bem-longa";
+    private final String secretKey = "your-super-long-secret-key-that-needs-to-be-very-difficult";
 
     // Generates a JWT token with the username and 1-hour expiration time
     public String generateToken(String username) {
