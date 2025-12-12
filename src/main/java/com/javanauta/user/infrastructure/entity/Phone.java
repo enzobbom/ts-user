@@ -1,17 +1,13 @@
 package com.javanauta.user.infrastructure.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-// some of the main Lombok funks to reduce boilerplate code
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-// Spring data JPA
+@Builder
 @Entity
 @Table(name = "phone")
 public class Phone {
