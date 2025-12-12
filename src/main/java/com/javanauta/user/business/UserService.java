@@ -4,6 +4,7 @@ import com.javanauta.user.business.converter.UserConverter;
 import com.javanauta.user.business.dto.UserDTO;
 import com.javanauta.user.infrastructure.entity.User;
 import com.javanauta.user.infrastructure.exceptions.ConflictException;
+import com.javanauta.user.infrastructure.exceptions.ResourceNotFoundException;
 import com.javanauta.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,5 +34,17 @@ public class UserService {
 
     public boolean emailExists(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException(String.format("Email '%s' not found.", email)));
+
+        return userConverter.toUserDTO(user);
+    }
+
+    public void deleteUserByEmail(String email) {
+        userRepository.deleteByEmail(email);
     }
 }
