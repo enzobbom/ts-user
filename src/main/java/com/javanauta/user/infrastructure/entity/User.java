@@ -1,27 +1,21 @@
 package com.javanauta.user.infrastructure.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
-// some of the main Lombok funks to reduce boilerplate code
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-// Spring data JPA
+@Builder
 @Entity
 @Table(name = "user_table")
 public class User implements UserDetails {
-    // UserDetails is a class from Spring Security for a login user and therefore offers functionalities
-    // to validate user details and so on
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
