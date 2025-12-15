@@ -1,10 +1,13 @@
 package com.javanauta.user.controller;
 
 import com.javanauta.user.business.UserService;
+import com.javanauta.user.business.dto.AddressDTO;
+import com.javanauta.user.business.dto.PhoneDTO;
 import com.javanauta.user.business.dto.UserDTO;
 import com.javanauta.user.infrastructure.entity.User;
 import com.javanauta.user.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,5 +47,18 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(userService.updateUser(token, userDTO));
+    }
 
+    @PutMapping("/address")
+    public ResponseEntity<AddressDTO> updateAddress(@RequestBody AddressDTO addressDTO, @RequestParam("id") Long id) {
+        return ResponseEntity.ok(userService.updateAddress(id, addressDTO));
+    }
+
+    @PutMapping("/phone")
+    public ResponseEntity<PhoneDTO> updatePhone(@RequestBody PhoneDTO phoneDTO, @RequestParam("id") Long id) {
+        return ResponseEntity.ok(userService.updatePhone(id, phoneDTO));
+    }
 }

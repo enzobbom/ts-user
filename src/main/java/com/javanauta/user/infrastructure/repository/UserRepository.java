@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
-    Optional<User> findByEmail(String email); // 'Optional' avoids the NullPointerException (in case the user doesn't exist in the database here)
+    Optional<User> findByEmail(String email);
 
-    @Transactional // creates a database transaction to wrap the deletion process
+    @Transactional
     void deleteByEmail(String email);
 }
