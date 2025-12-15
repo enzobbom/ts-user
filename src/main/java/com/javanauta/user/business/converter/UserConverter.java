@@ -90,4 +90,15 @@ public class UserConverter {
                 .number(phone.getNumber())
                 .build();
     }
+
+    public User updateUser(UserDTO userDTO, User user) {
+        return User.builder()
+                .id(user.getId())
+                .name(userDTO.getName() != null ? userDTO.getName() : user.getName())
+                .email(userDTO.getEmail() != null ? userDTO.getEmail() : user.getEmail())
+                .password(userDTO.getPassword() != null ? userDTO.getPassword() : user.getPassword())
+                .addresses(user.getAddresses())
+                .phones(user.getPhones())
+                .build();
+    }
 }
