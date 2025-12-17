@@ -20,4 +20,6 @@ public class Phone {
     private String areaCode;
     @Column(name = "number", length = 10)
     private String number;
+    @Column(name = "user_id")
+    private Long userId;
 }
