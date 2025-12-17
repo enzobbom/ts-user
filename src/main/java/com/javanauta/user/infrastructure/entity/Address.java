@@ -26,4 +26,6 @@ public class Address {
     private String state;
     @Column(name = "zip_code", length = 9)
     private String zipCode;
+    @Column(name = "user_id")
+    private Long userId;
 }

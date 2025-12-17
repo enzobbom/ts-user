@@ -40,6 +40,19 @@ public class UserConverter {
                 .build();
     }
 
+    public Address toAddress(AddressDTO addressDTO, Long userId) {
+        // meant to add a new address to an existing user
+        return Address.builder()
+                .street(addressDTO.getStreet())
+                .number(addressDTO.getNumber())
+                .complement(addressDTO.getComplement())
+                .city(addressDTO.getCity())
+                .state(addressDTO.getState())
+                .zipCode(addressDTO.getZipCode())
+                .userId(userId)
+                .build();
+    }
+
     public List<Phone> toPhoneList(List<PhoneDTO> phoneDTOS) {
         return phoneDTOS.stream().map(this::toPhone).toList();
     }
@@ -49,6 +62,16 @@ public class UserConverter {
                 .countryCode(phoneDTO.getCountryCode())
                 .areaCode(phoneDTO.getAreaCode())
                 .number(phoneDTO.getNumber())
+                .build();
+    }
+
+    public Phone toPhone(PhoneDTO phoneDTO, Long userId) {
+        // meant to add a new phone to an existing user
+        return Phone.builder()
+                .countryCode(phoneDTO.getCountryCode())
+                .areaCode(phoneDTO.getAreaCode())
+                .number(phoneDTO.getNumber())
+                .userId(userId)
                 .build();
     }
 
@@ -113,6 +136,7 @@ public class UserConverter {
                 .city(addressDTO.getCity() != null ? addressDTO.getCity() : address.getCity())
                 .state(addressDTO.getState() != null ? addressDTO.getState() : address.getState())
                 .zipCode(addressDTO.getZipCode() != null ? addressDTO.getZipCode() : address.getZipCode())
+                .userId(address.getUserId())
                 .build();
     }
 
@@ -122,6 +146,7 @@ public class UserConverter {
                 .countryCode(phoneDTO.getCountryCode() != null ? phoneDTO.getCountryCode() : phone.getCountryCode())
                 .areaCode(phoneDTO.getAreaCode() != null ? phoneDTO.getAreaCode() : phone.getAreaCode())
                 .number(phoneDTO.getNumber() != null ? phoneDTO.getNumber() : phone.getNumber())
+                .userId(phone.getUserId())
                 .build();
     }
 }
