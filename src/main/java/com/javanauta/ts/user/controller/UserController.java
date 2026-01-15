@@ -1,14 +1,11 @@
-package com.javanauta.user.controller;
+package com.javanauta.ts.user.controller;
 
-import com.javanauta.user.business.UserService;
-import com.javanauta.user.business.dto.AddressDTO;
-import com.javanauta.user.business.dto.PhoneDTO;
-import com.javanauta.user.business.dto.UserDTO;
-import com.javanauta.user.infrastructure.entity.Address;
-import com.javanauta.user.infrastructure.entity.User;
-import com.javanauta.user.infrastructure.security.JwtUtil;
+import com.javanauta.ts.user.business.UserService;
+import com.javanauta.ts.user.business.dto.AddressDTO;
+import com.javanauta.ts.user.business.dto.PhoneDTO;
+import com.javanauta.ts.user.business.dto.UserDTO;
+import com.javanauta.ts.user.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

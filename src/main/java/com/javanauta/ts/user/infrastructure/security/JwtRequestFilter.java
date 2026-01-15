@@ -1,4 +1,4 @@
-package com.javanauta.user.infrastructure.security;
+package com.javanauta.ts.user.infrastructure.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
