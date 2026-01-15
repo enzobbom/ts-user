@@ -1,11 +1,11 @@
-package com.javanauta.user.business.converter;
+package com.javanauta.ts.user.business.converter;
 
-import com.javanauta.user.business.dto.AddressDTO;
-import com.javanauta.user.business.dto.PhoneDTO;
-import com.javanauta.user.business.dto.UserDTO;
-import com.javanauta.user.infrastructure.entity.Address;
-import com.javanauta.user.infrastructure.entity.Phone;
-import com.javanauta.user.infrastructure.entity.User;
+import com.javanauta.ts.user.business.dto.AddressDTO;
+import com.javanauta.ts.user.business.dto.PhoneDTO;
+import com.javanauta.ts.user.business.dto.UserDTO;
+import com.javanauta.ts.user.infrastructure.entity.Address;
+import com.javanauta.ts.user.infrastructure.entity.Phone;
+import com.javanauta.ts.user.infrastructure.entity.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

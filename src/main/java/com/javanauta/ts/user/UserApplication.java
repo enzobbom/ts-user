@@ -1,4 +1,4 @@
-package com.javanauta.user;
+package com.javanauta.ts.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

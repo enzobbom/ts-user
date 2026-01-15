@@ -1,4 +1,4 @@
-package com.javanauta.user.infrastructure.exceptions;
+package com.javanauta.ts.user.infrastructure.exceptions;
 
 public class ConflictException extends RuntimeException {
     public ConflictException(String message) {

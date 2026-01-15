@@ -1,4 +1,4 @@
-package com.javanauta.user.infrastructure.security;
+package com.javanauta.ts.user.infrastructure.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
