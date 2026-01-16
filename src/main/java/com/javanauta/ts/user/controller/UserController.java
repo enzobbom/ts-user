@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @PostMapping("/phone")
-    public ResponseEntity<PhoneDTO> addAddress(@RequestBody PhoneDTO phoneDTO, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<PhoneDTO> addPhone(@RequestBody PhoneDTO phoneDTO, @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(userService.addPhone(token, phoneDTO));
     }
 }
