@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
 
     @PostMapping
     public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO) {
@@ -28,10 +26,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody UserDTO userDTO) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword())
-        );
-        return "Bearer " + jwtUtil.generateToken(authentication.getName());
+        return userService.login(userDTO);
     }
 
     @GetMapping
