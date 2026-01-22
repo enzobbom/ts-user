@@ -14,6 +14,9 @@ import com.javanauta.ts.user.infrastructure.repository.PhoneRepository;
 import com.javanauta.ts.user.infrastructure.repository.UserRepository;
 import com.javanauta.ts.user.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final AddressRepository addressRepository;
     private final PhoneRepository phoneRepository;
@@ -46,6 +50,11 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+    public String login(UserDTO userDTO) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
+        return "Bearer " + jwtUtil.generateToken(authentication.getName());
+    }
+
     public UserDTO getUserByEmail(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new ResourceNotFoundException(String.format("Email '%s' not found.", email)));
@@ -54,7 +63,11 @@ public class UserService {
     }
 
     public void deleteUserByEmail(String email) {
-        userRepository.deleteByEmail(email);
+        if (emailExists(email)) {
+            userRepository.deleteByEmail(email);
+        } else {
+            throw new ResourceNotFoundException(String.format("Email '%s' not found.", email));
+        }
     }
 
     public UserDTO updateUser(String token, UserDTO userDTO) {
