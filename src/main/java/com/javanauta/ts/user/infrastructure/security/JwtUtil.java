@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -13,7 +14,8 @@ import java.util.Date;
 public class JwtUtil {
 
     // Secret key used to sign and verify JWT tokens
-    private final String secretKey = "your-super-long-secret-key-that-needs-to-be-very-difficult";
+    @Value("${ts.jwt.secret}")
+    private String secretKey;
 
     // Generates a JWT token with the username and 1-hour expiration time
     public String generateToken(String username) {
