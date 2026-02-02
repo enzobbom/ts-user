@@ -20,11 +20,11 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", length = 100)
+    @Column(name = "name", length = 150)
     private String name;
-    @Column(name = "email", length = 100)
+    @Column(name = "email", length = 255)
     private String email;
-    @Column(name = "password", length = 100)
+    @Column(name = "password", length = 255)
     private String password;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
