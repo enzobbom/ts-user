@@ -1,8 +1,8 @@
 package com.javanauta.ts.user.controller;
 
-import com.javanauta.ts.user.infrastructure.exceptions.ConflictException;
-import com.javanauta.ts.user.infrastructure.exceptions.ResourceNotFoundException;
-import com.javanauta.ts.user.infrastructure.exceptions.UnauthorizedException;
+import com.javanauta.ts.user.infrastructure.exception.ConflictException;
+import com.javanauta.ts.user.infrastructure.exception.ResourceNotFoundException;
+import com.javanauta.ts.user.infrastructure.exception.UnauthorizedException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

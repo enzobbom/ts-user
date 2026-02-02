@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.infrastructure.exceptions;
+package com.javanauta.ts.user.infrastructure.exception;
 
 import org.springframework.security.core.AuthenticationException;
 
