@@ -1,48 +1,52 @@
 package com.javanauta.ts.user.controller;
 
-import com.javanauta.ts.user.infrastructure.exceptions.ConflictException;
-import com.javanauta.ts.user.infrastructure.exceptions.ResourceNotFoundException;
-import com.javanauta.ts.user.infrastructure.exceptions.UnauthorizedException;
-import io.jsonwebtoken.ExpiredJwtException;
+import com.javanauta.ts.user.infrastructure.exception.ConflictException;
+import com.javanauta.ts.user.infrastructure.exception.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
-    // app errors
+    // business exceptions
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> handlerResourceNotFoundException(ResourceNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        log.warn("Resource not found exception: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<String> handlerConflictException(ConflictException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+        log.warn("Conflict exception: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<String> handlerUnauthorizedException(UnauthorizedException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
-    }
-
-    // other errors
+    // AuthenticationException from AuthenticationManager (most likely only BadCredentialsException)
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handlerBadCredentialsException(BadCredentialsException ex) {
-        // Issued when calling AuthenticatorManager.authenticate
-
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+        log.warn("Bad credentials exception: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username and password combination");
     }
 
-    @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<String> handlerExpiredJwtException(ExpiredJwtException ex) {
-        // Issued when calling JwtUtil.extractClaims
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handlerAuthenticationException(AuthenticationException ex) {
+        log.warn("Authentication exception: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication error");
+    }
 
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    // Generic error handling
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGenericException(Exception ex) {
+        log.error("Unhandled exception", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
     }
 }

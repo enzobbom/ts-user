@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.infrastructure.exceptions;
+package com.javanauta.ts.user.infrastructure.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {
