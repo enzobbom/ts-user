@@ -14,6 +14,7 @@ import com.javanauta.ts.user.infrastructure.repository.PhoneRepository;
 import com.javanauta.ts.user.infrastructure.repository.UserRepository;
 import com.javanauta.ts.user.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -36,14 +38,14 @@ public class UserService {
         validateEmailNotExists(userDTO.getEmail());
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        User user = userConverter.toUser(userDTO);
-        return userConverter.toUserDTO(userRepository.save(user));
+        User savedUser = userRepository.save(userConverter.toUser(userDTO));
+        log.info("User {} created", savedUser.getId());
+
+        return userConverter.toUserDTO(savedUser);
     }
 
     public void validateEmailNotExists(String email) {
-        if (emailExists(email)) {
-            throw new ConflictException(String.format("Email '%s' already exists.", email));
-        }
+        if (emailExists(email)) {throw new ConflictException("Email already registered");}
     }
 
     public boolean emailExists(String email) {
@@ -56,67 +58,65 @@ public class UserService {
     }
 
     public UserDTO getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Email '%s' not found.", email)));
-
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return userConverter.toUserDTO(user);
     }
 
     public void deleteUserByEmail(String email) {
-        if (emailExists(email)) {
-            userRepository.deleteByEmail(email);
-        } else {
-            throw new ResourceNotFoundException(String.format("Email '%s' not found.", email));
-        }
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        userRepository.deleteByEmail(email);
+        log.info("User {} deleted", user.getId());
     }
 
     public UserDTO updateUser(String token, UserDTO userDTO) {
         String email = jwtUtil.extractUsername(token.substring(7));
 
         userDTO.setPassword(userDTO.getPassword() != null ? passwordEncoder.encode(userDTO.getPassword()) : null);
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Email '%s' not found.", email)));
 
-        User updatedUser = userConverter.updateUser(userDTO, user);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User updatedUser = userRepository.save(userConverter.updateUser(userDTO, user));
 
-        return userConverter.toUserDTO(userRepository.save(updatedUser));
+        log.info("User {} updated", updatedUser.getId());
+
+        return userConverter.toUserDTO(updatedUser);
     }
 
     public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
-        Address address = addressRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Address with ID '%d' not found.", id)));
+        Address address = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Address not found"));
 
-        Address updatedAddress = userConverter.updateAddress(addressDTO, address);
+        Address updatedAddress = addressRepository.save(userConverter.updateAddress(addressDTO, address));
+        log.info("Address {} updated", updatedAddress.getId());
 
-        return userConverter.toAddressDTO(addressRepository.save(updatedAddress));
+        return userConverter.toAddressDTO(updatedAddress);
     }
 
     public PhoneDTO updatePhone(Long id, PhoneDTO phoneDTO) {
-        Phone phone = phoneRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Phone with ID '%d' not found.", id)));
+        Phone phone = phoneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Phone not found"));
 
-        Phone updatedPhone = userConverter.updatePhone(phoneDTO, phone);
+        Phone updatedPhone = phoneRepository.save(userConverter.updatePhone(phoneDTO, phone));
+        log.info("Phone {} updated", updatedPhone.getId());
 
-        return userConverter.toPhoneDTO(phoneRepository.save(updatedPhone));
+        return userConverter.toPhoneDTO(updatedPhone);
     }
 
     public AddressDTO addAddress(String token, AddressDTO addressDTO) {
         String email = jwtUtil.extractUsername(token.substring(7));
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("User '%s' not found.", email)));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        Address address = userConverter.toAddress(addressDTO, user.getId());
+        Address savedAddress = addressRepository.save(userConverter.toAddress(addressDTO, user.getId()));
+        log.info("Address {} added to user {}", savedAddress.getId(), user.getId());
 
-        return userConverter.toAddressDTO(addressRepository.save(address));
+        return userConverter.toAddressDTO(savedAddress);
     }
 
     public PhoneDTO addPhone(String token, PhoneDTO phoneDTO) {
         String email = jwtUtil.extractUsername(token.substring(7));
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("User '%s' not found.", email)));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        Phone phone = userConverter.toPhone(phoneDTO, user.getId());
+        Phone savedPhone = phoneRepository.save(userConverter.toPhone(phoneDTO, user.getId()));
+        log.info("Phone {} added to user {}", savedPhone.getId(), user.getId());
 
-        return userConverter.toPhoneDTO(phoneRepository.save(phone));
+        return userConverter.toPhoneDTO(savedPhone);
     }
 }
