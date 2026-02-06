@@ -1,5 +1,7 @@
 package com.javanauta.ts.user.infrastructure.security;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +20,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@SecurityScheme(name = SecurityConfig.SECURITY_SCHEME, type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "bearer")
 public class SecurityConfig {
+
+    public static final String SECURITY_SCHEME = "bearerAuth";
 
     // JwtUtil and UserDetailsService instances injected by Spring
     private final JwtUtil jwtUtil;
@@ -40,6 +45,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disables CSRF protection for REST APIs (not needed in stateless APIs)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/user/login").permitAll() // Allows access to login endpoint
                         .requestMatchers(HttpMethod.GET, "/auth").permitAll() // Allows access to GET /auth endpoint
                         .requestMatchers(HttpMethod.POST, "/user").permitAll() // Allows access to POST /user endpoint
