@@ -7,12 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AddressDTO {
+public class CepDTO {
 
-    private Long id;
     private String street;
-    private Long number;
-    private String complement;
     private String city;
     private String neighbourhood;
     private String state;

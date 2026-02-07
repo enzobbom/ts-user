@@ -22,10 +22,12 @@ public class Address {
     private String complement;
     @Column(name = "city", length = 100)
     private String city;
-    @Column(name = "state", length = 2)
+    @Column(name = "neighbourhood", length = 60)
+    private String neighbourhood;
+    @Column(name = "state", length = 17) // length("Rio Grande do Sul") = 17
     private String state;
-    @Column(name = "zip_code", length = 8)
-    private String zipCode;
+    @Column(name = "cep", length = 9)
+    private String cep;
     @Column(name = "user_id")
     private Long userId;
 }
