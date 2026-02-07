@@ -35,8 +35,9 @@ public class UserConverter {
                 .number(addressDTO.getNumber())
                 .complement(addressDTO.getComplement())
                 .city(addressDTO.getCity())
+                .neighbourhood(addressDTO.getNeighbourhood())
                 .state(addressDTO.getState())
-                .zipCode(addressDTO.getZipCode())
+                .cep(addressDTO.getCep())
                 .build();
     }
 
@@ -47,8 +48,9 @@ public class UserConverter {
                 .number(addressDTO.getNumber())
                 .complement(addressDTO.getComplement())
                 .city(addressDTO.getCity())
+                .neighbourhood(addressDTO.getNeighbourhood())
                 .state(addressDTO.getState())
-                .zipCode(addressDTO.getZipCode())
+                .cep(addressDTO.getCep())
                 .userId(userId)
                 .build();
     }
@@ -98,8 +100,9 @@ public class UserConverter {
                 .number(address.getNumber())
                 .complement(address.getComplement())
                 .city(address.getCity())
+                .neighbourhood(address.getNeighbourhood())
                 .state(address.getState())
-                .zipCode(address.getZipCode())
+                .cep(address.getCep())
                 .build();
     }
 
@@ -134,8 +137,9 @@ public class UserConverter {
                 .number(addressDTO.getNumber() != null ? addressDTO.getNumber() : address.getNumber())
                 .complement(addressDTO.getComplement() != null ? addressDTO.getComplement() : address.getComplement())
                 .city(addressDTO.getCity() != null ? addressDTO.getCity() : address.getCity())
+                .neighbourhood(addressDTO.getNeighbourhood() != null ? addressDTO.getNeighbourhood() : address.getNeighbourhood())
                 .state(addressDTO.getState() != null ? addressDTO.getState() : address.getState())
-                .zipCode(addressDTO.getZipCode() != null ? addressDTO.getZipCode() : address.getZipCode())
+                .cep(addressDTO.getCep() != null ? addressDTO.getCep() : address.getCep())
                 .userId(address.getUserId())
                 .build();
     }

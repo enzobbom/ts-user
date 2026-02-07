@@ -2,7 +2,9 @@ package com.javanauta.ts.user.controller;
 
 import com.javanauta.ts.user.infrastructure.exception.ConflictException;
 import com.javanauta.ts.user.infrastructure.exception.ResourceNotFoundException;
+import com.javanauta.ts.user.infrastructure.exception.IllegalArgumentException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,6 +17,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     // business exceptions
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handlerValidationErrorException(IllegalArgumentException ex) {
+        log.warn("Illegal argument exception: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> handlerResourceNotFoundException(ResourceNotFoundException ex) {
