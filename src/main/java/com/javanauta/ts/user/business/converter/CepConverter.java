@@ -11,8 +11,9 @@ public class CepConverter {
         return CepDTO.builder()
                 .street(viaCepResponseDTO.getLogradouro())
                 .city(viaCepResponseDTO.getLocalidade())
+                .neighbourhood(viaCepResponseDTO.getBairro())
                 .state(viaCepResponseDTO.getEstado())
-                .zipCode(viaCepResponseDTO.getCep())
+                .cep(viaCepResponseDTO.getCep())
                 .build();
     }
 }

@@ -11,6 +11,7 @@ public class CepDTO {
 
     private String street;
     private String city;
+    private String neighbourhood;
     private String state;
-    private String zipCode;
+    private String cep;
 }
