@@ -1,9 +1,12 @@
 package com.javanauta.ts.user.controller;
 
 import com.javanauta.ts.user.business.UserService;
+import com.javanauta.ts.user.business.ViaCepService;
 import com.javanauta.ts.user.business.dto.AddressDTO;
+import com.javanauta.ts.user.business.dto.CepDTO;
 import com.javanauta.ts.user.business.dto.PhoneDTO;
 import com.javanauta.ts.user.business.dto.UserDTO;
+import com.javanauta.ts.user.infrastructure.client.dto.ViaCepResponseDTO;
 import com.javanauta.ts.user.infrastructure.security.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final ViaCepService viaCepService;
 
     @PostMapping
     @Operation(summary = "Create user", description = "Creates a new user")
@@ -109,5 +113,15 @@ public class UserController {
     @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<PhoneDTO> addPhone(@RequestBody PhoneDTO phoneDTO, @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(userService.addPhone(token, phoneDTO));
+    }
+
+    @GetMapping("/address/{cep}")
+    @Operation(summary = "Get CEP details", description = "Gets all details of a CEP")
+    @ApiResponse(responseCode = "200", description = "CEP details successfully found")
+    @ApiResponse(responseCode = "400", description = "CEP with invalid format")
+    @ApiResponse(responseCode = "404", description = "CEP not found")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public ResponseEntity<CepDTO> getCEPDetails(@PathVariable("cep") String cep) {
+        return ResponseEntity.ok(viaCepService.getCEPDetails(cep));
     }
 }
