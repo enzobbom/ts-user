@@ -45,6 +45,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disables CSRF protection for REST APIs (not needed in stateless APIs)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user").permitAll() // Allows access to POST /user endpoint
                         .requestMatchers(HttpMethod.POST, "/user/login").permitAll() // Allows access to login endpoint
