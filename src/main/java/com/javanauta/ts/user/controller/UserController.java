@@ -6,7 +6,6 @@ import com.javanauta.ts.user.business.dto.AddressDTO;
 import com.javanauta.ts.user.business.dto.CepDTO;
 import com.javanauta.ts.user.business.dto.PhoneDTO;
 import com.javanauta.ts.user.business.dto.UserDTO;
-import com.javanauta.ts.user.infrastructure.client.dto.ViaCepResponseDTO;
 import com.javanauta.ts.user.infrastructure.security.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -40,8 +39,8 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully logged in")
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public String login(@RequestBody UserDTO userDTO) {
-        return userService.login(userDTO);
+    public ResponseEntity<String> login(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(userService.login(userDTO));
     }
 
     @GetMapping
