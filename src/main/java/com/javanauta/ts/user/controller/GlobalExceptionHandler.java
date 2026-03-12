@@ -36,12 +36,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-    // AuthenticationException from AuthenticationManager (most likely only BadCredentialsException)
+    // Authentication errors during login attempt
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handlerBadCredentialsException(BadCredentialsException ex) {
         log.warn("Bad credentials exception: {}", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username and password combination");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
     }
 
     @ExceptionHandler(AuthenticationException.class)
