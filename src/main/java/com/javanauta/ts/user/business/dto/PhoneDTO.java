@@ -1,7 +1,6 @@
 package com.javanauta.ts.user.business.dto;
 
 import lombok.*;
-import java.util.List;
 
 @Getter
 @Setter

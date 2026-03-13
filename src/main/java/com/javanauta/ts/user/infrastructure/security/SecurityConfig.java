@@ -57,7 +57,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/user").permitAll() // Allows access to POST /user endpoint
                         .requestMatchers(HttpMethod.POST, "/user/login").permitAll() // Allows access to login endpoint
                         .requestMatchers(HttpMethod.GET, "/user/address/**").permitAll() // Allows access to login endpoint
-                        .requestMatchers("/user/**").authenticated() // Requires authentication for any /user/** endpoint
                         .anyRequest().authenticated() // Requires authentication for all other requests
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Adds JWT filter before default authentication filter

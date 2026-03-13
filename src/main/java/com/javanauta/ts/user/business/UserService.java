@@ -33,6 +33,7 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final AddressRepository addressRepository;
     private final PhoneRepository phoneRepository;
+    private static final String USER_NOT_FOUND_MSG = "User not found";
 
     public UserDTO saveUser(UserDTO userDTO) {
         validateEmailNotExists(userDTO.getEmail());
@@ -58,12 +59,12 @@ public class UserService {
     }
 
     public UserDTO getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
         return userConverter.toUserDTO(user);
     }
 
     public void deleteUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
 
         userRepository.deleteByEmail(email);
         log.info("User {} deleted", user.getId());
@@ -74,7 +75,7 @@ public class UserService {
 
         userDTO.setPassword(userDTO.getPassword() != null ? passwordEncoder.encode(userDTO.getPassword()) : null);
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
         User updatedUser = userRepository.save(userConverter.updateUser(userDTO, user));
 
         log.info("User {} updated", updatedUser.getId());
@@ -102,7 +103,7 @@ public class UserService {
 
     public AddressDTO addAddress(String token, AddressDTO addressDTO) {
         String email = jwtUtil.extractUsername(token.substring(7));
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
 
         Address savedAddress = addressRepository.save(userConverter.toAddress(addressDTO, user.getId()));
         log.info("Address {} added to user {}", savedAddress.getId(), user.getId());
@@ -112,7 +113,7 @@ public class UserService {
 
     public PhoneDTO addPhone(String token, PhoneDTO phoneDTO) {
         String email = jwtUtil.extractUsername(token.substring(7));
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
 
         Phone savedPhone = phoneRepository.save(userConverter.toPhone(phoneDTO, user.getId()));
         log.info("Phone {} added to user {}", savedPhone.getId(), user.getId());

@@ -22,7 +22,7 @@ public class JwtUtil {
     @Value("${ts.jwt.secret}")
     private String secretKey;
 
-    private static final long JWT_EXPIRATION_MS = 1000 * 60 * 60;
+    private static final long JWT_EXPIRATION_MS = 1000 * 60 * 60L;
 
     @PostConstruct
     public void init() {
