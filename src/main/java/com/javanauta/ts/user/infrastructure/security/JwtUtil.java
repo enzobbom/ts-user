@@ -3,21 +3,20 @@ package com.javanauta.ts.user.infrastructure.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 
 @Service
 public class JwtUtil {
 
     private JwtParser jwtParser;
-    private Key signingKey;
+    private SecretKey signingKey;
 
     // Secret key used to sign and verify JWT tokens
     @Value("${ts.jwt.secret}")
@@ -30,7 +29,7 @@ public class JwtUtil {
         signingKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         jwtParser = Jwts.parser()
-                .setSigningKey(signingKey)
+                .verifyWith(signingKey)
                 .build();
     }
 
@@ -39,18 +38,18 @@ public class JwtUtil {
         Date now = new Date();
 
         return Jwts.builder()
-                .setSubject(username) // Sets username as the token subject
-                .setIssuedAt(now) // Sets the token issue date/time
-                .setExpiration(new Date(now.getTime() + JWT_EXPIRATION_MS)) // Sets expiration (1 hour from now)
-                .signWith(signingKey, SignatureAlgorithm.HS256) // Converts key to bytes and signs the token
+                .subject(username) // Sets username as the token subject
+                .issuedAt(now) // Sets the token issue date/time
+                .expiration(new Date(now.getTime() + JWT_EXPIRATION_MS)) // Sets expiration (1 hour from now)
+                .signWith(signingKey) // Converts key to bytes and signs the token
                 .compact(); // Builds the JWT token
     }
 
     // Extracts claims from the JWT token
     public Claims extractClaims(String token) {
         return jwtParser
-                .parseClaimsJws(token) // Parses the JWT token and gets claims
-                .getBody(); // Returns claims body
+                .parseSignedClaims(token) // Parses the JWT token and gets claims
+                .getPayload(); // Returns claims body
     }
 
     // Extracts username from the JWT token
