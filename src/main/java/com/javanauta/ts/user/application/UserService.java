@@ -1,5 +1,7 @@
 package com.javanauta.ts.user.application;
 
+import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
+import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
 import com.javanauta.ts.user.controller.converter.UserConverter;
 import com.javanauta.ts.user.controller.dto.in.AddressDTO;
 import com.javanauta.ts.user.controller.dto.in.PhoneDTO;
@@ -7,29 +9,24 @@ import com.javanauta.ts.user.controller.dto.in.UserDTO;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;
-import com.javanauta.ts.user.shared.exception.ConflictException;
-import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
 import com.javanauta.ts.user.infrastructure.persistence.AddressRepository;
 import com.javanauta.ts.user.infrastructure.persistence.PhoneRepository;
 import com.javanauta.ts.user.infrastructure.persistence.UserRepository;
 import com.javanauta.ts.user.infrastructure.security.JwtUtil;
+import com.javanauta.ts.user.shared.exception.ConflictException;
+import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
-
     private final UserRepository userRepository;
     private final UserConverter userConverter;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+    private final UserPasswordEncoder passwordEncoder;
+    private final UserAuthenticator userAuthenticator;
     private final JwtUtil jwtUtil;
     private final AddressRepository addressRepository;
     private final PhoneRepository phoneRepository;
@@ -54,8 +51,7 @@ public class UserService {
     }
 
     public String login(UserDTO userDTO) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
-        return "Bearer " + jwtUtil.generateToken(authentication.getName());
+        return userAuthenticator.login(userDTO.getEmail(), userDTO.getPassword());
     }
 
     public UserDTO getUserByEmail(String email) {
