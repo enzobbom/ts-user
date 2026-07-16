@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.infrastructure.exception;
+package com.javanauta.ts.user.shared.exception;
 
 public class IllegalArgumentException extends RuntimeException {
     public IllegalArgumentException(String message) {

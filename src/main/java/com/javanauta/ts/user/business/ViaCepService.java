@@ -2,10 +2,10 @@ package com.javanauta.ts.user.business;
 
 import com.javanauta.ts.user.controller.converter.CepConverter;
 import com.javanauta.ts.user.controller.dto.in.CepDTO;
-import com.javanauta.ts.user.infrastructure.client.ViaCepClient;
-import com.javanauta.ts.user.infrastructure.client.dto.ViaCepResponseDTO;
-import com.javanauta.ts.user.infrastructure.exception.IllegalArgumentException;
-import com.javanauta.ts.user.infrastructure.exception.ResourceNotFoundException;
+import com.javanauta.ts.user.infrastructure.client.cep.FeignCepClient;
+import com.javanauta.ts.user.infrastructure.client.cep.dto.ExternalCepDTO;
+import com.javanauta.ts.user.shared.exception.IllegalArgumentException;
+import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class ViaCepService {
 
-    private final ViaCepClient viaCepClient;
+    private final FeignCepClient viaCepClient;
     private final CepConverter cepConverter;
 
     public CepDTO getCEPDetails(String cep) {
@@ -23,12 +23,12 @@ public class ViaCepService {
             throw new IllegalArgumentException("Invalid CEP format");
         }
 
-        ViaCepResponseDTO viaCepResponseDTO = viaCepClient.getCEPDetails(cep.replace("-", ""));
+        ExternalCepDTO cepDTO = viaCepClient.getCEPDetails(cep.replace("-", ""));
 
-        if (viaCepResponseDTO.getCep() == null) {
+        if (cepDTO.getCep() == null) {
             throw new ResourceNotFoundException("CEP not found");
         }
 
-        return cepConverter.toCepDTO(viaCepResponseDTO);
+        return cepConverter.toCepDTO(cepDTO);
     }
 }

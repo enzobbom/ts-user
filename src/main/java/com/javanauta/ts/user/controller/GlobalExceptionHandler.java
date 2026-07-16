@@ -1,10 +1,9 @@
 package com.javanauta.ts.user.controller;
 
-import com.javanauta.ts.user.infrastructure.exception.ConflictException;
-import com.javanauta.ts.user.infrastructure.exception.ResourceNotFoundException;
-import com.javanauta.ts.user.infrastructure.exception.IllegalArgumentException;
+import com.javanauta.ts.user.shared.exception.ConflictException;
+import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
+import com.javanauta.ts.user.shared.exception.IllegalArgumentException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;

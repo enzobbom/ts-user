@@ -1,7 +1,7 @@
 package com.javanauta.ts.user.infrastructure.security;
 
 import com.javanauta.ts.user.domain.model.User;
-import com.javanauta.ts.user.infrastructure.repository.UserRepository;
+import com.javanauta.ts.user.infrastructure.persistence.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

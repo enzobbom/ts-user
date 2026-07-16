@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.infrastructure.repository;
+package com.javanauta.ts.user.infrastructure.persistence;
 
 import com.javanauta.ts.user.domain.model.Phone;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,11 +1,11 @@
-package com.javanauta.ts.user.infrastructure.client.dto;
+package com.javanauta.ts.user.infrastructure.client.cep.dto;
 
 import lombok.*;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class ViaCepResponseDTO {
+public class ExternalCepDTO {
 
     private String cep;
     private String logradouro;
