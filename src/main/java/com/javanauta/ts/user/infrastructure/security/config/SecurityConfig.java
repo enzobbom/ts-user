@@ -1,5 +1,6 @@
-package com.javanauta.ts.user.infrastructure.security;
+package com.javanauta.ts.user.infrastructure.security.config;
 
+import com.javanauta.ts.user.infrastructure.security.JwtRequestFilter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;

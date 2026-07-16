@@ -1,12 +1,12 @@
 package com.javanauta.ts.user.controller;
 
-import com.javanauta.ts.user.business.UserService;
-import com.javanauta.ts.user.business.ViaCepService;
+import com.javanauta.ts.user.application.UserService;
+import com.javanauta.ts.user.application.ViaCepService;
 import com.javanauta.ts.user.controller.dto.in.AddressDTO;
 import com.javanauta.ts.user.controller.dto.in.CepDTO;
 import com.javanauta.ts.user.controller.dto.in.PhoneDTO;
 import com.javanauta.ts.user.controller.dto.in.UserDTO;
-import com.javanauta.ts.user.infrastructure.security.SecurityConfig;
+import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

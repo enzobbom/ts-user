@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.controller;
+package com.javanauta.ts.user.controller.exception;
 
 import com.javanauta.ts.user.shared.exception.ConflictException;
 import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;

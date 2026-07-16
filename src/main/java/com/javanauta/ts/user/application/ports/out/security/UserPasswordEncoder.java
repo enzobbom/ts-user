@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.business.ports.out.security;
+package com.javanauta.ts.user.application.ports.out.security;
 
 public interface UserPasswordEncoder {
     String encode(String password);

@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.business;
+package com.javanauta.ts.user.application;
 
 import com.javanauta.ts.user.controller.converter.UserConverter;
 import com.javanauta.ts.user.controller.dto.in.AddressDTO;
