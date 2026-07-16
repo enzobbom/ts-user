@@ -1,8 +1,7 @@
 package com.javanauta.ts.user.infrastructure.security;
 
-import com.javanauta.ts.user.infrastructure.entity.User;
+import com.javanauta.ts.user.domain.model.User;
 import com.javanauta.ts.user.infrastructure.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.business.dto;
+package com.javanauta.ts.user.controller.dto.in;
 
 import lombok.*;
 import java.util.List;

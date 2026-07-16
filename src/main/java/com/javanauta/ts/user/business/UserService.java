@@ -1,12 +1,12 @@
 package com.javanauta.ts.user.business;
 
-import com.javanauta.ts.user.business.converter.UserConverter;
-import com.javanauta.ts.user.business.dto.AddressDTO;
-import com.javanauta.ts.user.business.dto.PhoneDTO;
-import com.javanauta.ts.user.business.dto.UserDTO;
-import com.javanauta.ts.user.infrastructure.entity.Address;
-import com.javanauta.ts.user.infrastructure.entity.Phone;
-import com.javanauta.ts.user.infrastructure.entity.User;
+import com.javanauta.ts.user.controller.converter.UserConverter;
+import com.javanauta.ts.user.controller.dto.in.AddressDTO;
+import com.javanauta.ts.user.controller.dto.in.PhoneDTO;
+import com.javanauta.ts.user.controller.dto.in.UserDTO;
+import com.javanauta.ts.user.domain.model.Address;
+import com.javanauta.ts.user.domain.model.Phone;
+import com.javanauta.ts.user.domain.model.User;
 import com.javanauta.ts.user.infrastructure.exception.ConflictException;
 import com.javanauta.ts.user.infrastructure.exception.ResourceNotFoundException;
 import com.javanauta.ts.user.infrastructure.repository.AddressRepository;
