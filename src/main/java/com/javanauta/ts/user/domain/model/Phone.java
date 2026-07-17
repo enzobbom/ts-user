@@ -1,6 +1,6 @@
 package com.javanauta.ts.user.domain.model;
 
-import com.javanauta.ts.user.domain.data.PhoneData;
+import com.javanauta.ts.user.application.data.PhoneData;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -2,11 +2,11 @@ package com.javanauta.ts.user.application;
 
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
-import com.javanauta.ts.user.controller.converter.UserConverter;
-import com.javanauta.ts.user.controller.dto.out.AddressDTO;
-import com.javanauta.ts.user.controller.dto.out.PhoneDTO;
-import com.javanauta.ts.user.controller.dto.out.UserDTO;
-import com.javanauta.ts.user.domain.data.CreateUserData;
+import com.javanauta.ts.user.presentation.converter.UserConverter;
+import com.javanauta.ts.user.presentation.dto.out.AddressDTO;
+import com.javanauta.ts.user.presentation.dto.out.PhoneDTO;
+import com.javanauta.ts.user.presentation.dto.out.UserDTO;
+import com.javanauta.ts.user.application.data.CreateUserData;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;

@@ -1,9 +1,9 @@
 package com.javanauta.ts.user.domain.model;
 
-import com.javanauta.ts.user.domain.data.AddressData;
-import com.javanauta.ts.user.domain.data.PhoneData;
-import com.javanauta.ts.user.domain.data.CreateUserData;
-import com.javanauta.ts.user.domain.data.UpdateUserData;
+import com.javanauta.ts.user.application.data.AddressData;
+import com.javanauta.ts.user.application.data.PhoneData;
+import com.javanauta.ts.user.application.data.CreateUserData;
+import com.javanauta.ts.user.application.data.UpdateUserData;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;

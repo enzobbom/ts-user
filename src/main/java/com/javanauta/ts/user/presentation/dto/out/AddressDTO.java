@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.controller.dto.out;
+package com.javanauta.ts.user.presentation.dto.out;
 
 import lombok.*;
 
@@ -7,9 +7,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CepDTO {
+public class AddressDTO {
 
+    private Long id;
     private String street;
+    private Long number;
+    private String complement;
     private String city;
     private String neighbourhood;
     private String state;

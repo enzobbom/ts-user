@@ -1,10 +1,10 @@
-package com.javanauta.ts.user.controller;
+package com.javanauta.ts.user.presentation;
 
 import com.javanauta.ts.user.application.UserService;
 import com.javanauta.ts.user.application.ViaCepService;
-import com.javanauta.ts.user.controller.dto.in.CreateUserRequestDTO;
-import com.javanauta.ts.user.controller.dto.out.*;
-import com.javanauta.ts.user.controller.mapper.UserMapper;
+import com.javanauta.ts.user.presentation.dto.in.CreateUserRequestDTO;
+import com.javanauta.ts.user.presentation.dto.out.*;
+import com.javanauta.ts.user.presentation.mapper.UserMapper;
 import com.javanauta.ts.user.domain.model.User;
 import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;

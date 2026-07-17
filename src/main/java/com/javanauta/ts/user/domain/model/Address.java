@@ -1,6 +1,6 @@
 package com.javanauta.ts.user.domain.model;
 
-import com.javanauta.ts.user.domain.data.AddressData;
+import com.javanauta.ts.user.application.data.AddressData;
 import jakarta.persistence.*;
 import lombok.*;
 

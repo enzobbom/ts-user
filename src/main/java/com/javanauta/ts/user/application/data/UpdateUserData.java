@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.domain.data;
+package com.javanauta.ts.user.application.data;
 
 public record UpdateUserData(
         String name,

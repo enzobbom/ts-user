@@ -1,8 +1,8 @@
-package com.javanauta.ts.user.controller.converter;
+package com.javanauta.ts.user.presentation.converter;
 
-import com.javanauta.ts.user.controller.dto.out.AddressDTO;
-import com.javanauta.ts.user.controller.dto.out.PhoneDTO;
-import com.javanauta.ts.user.controller.dto.out.UserDTO;
+import com.javanauta.ts.user.presentation.dto.out.AddressDTO;
+import com.javanauta.ts.user.presentation.dto.out.PhoneDTO;
+import com.javanauta.ts.user.presentation.dto.out.UserDTO;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;

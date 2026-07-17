@@ -1,15 +1,14 @@
-package com.javanauta.ts.user.controller.mapper;
+package com.javanauta.ts.user.presentation.mapper;
 
-import com.javanauta.ts.user.controller.dto.in.CreateUserAddressDTO;
-import com.javanauta.ts.user.controller.dto.in.CreateUserPhoneDTO;
-import com.javanauta.ts.user.controller.dto.in.CreateUserRequestDTO;
-import com.javanauta.ts.user.controller.dto.out.AddressDTO;
-import com.javanauta.ts.user.controller.dto.out.AddressResponseDTO;
-import com.javanauta.ts.user.controller.dto.out.PhoneResponseDTO;
-import com.javanauta.ts.user.controller.dto.out.UserResponseDTO;
-import com.javanauta.ts.user.domain.data.AddressData;
-import com.javanauta.ts.user.domain.data.CreateUserData;
-import com.javanauta.ts.user.domain.data.PhoneData;
+import com.javanauta.ts.user.presentation.dto.in.CreateUserAddressDTO;
+import com.javanauta.ts.user.presentation.dto.in.CreateUserPhoneDTO;
+import com.javanauta.ts.user.presentation.dto.in.CreateUserRequestDTO;
+import com.javanauta.ts.user.presentation.dto.out.AddressResponseDTO;
+import com.javanauta.ts.user.presentation.dto.out.PhoneResponseDTO;
+import com.javanauta.ts.user.presentation.dto.out.UserResponseDTO;
+import com.javanauta.ts.user.application.data.AddressData;
+import com.javanauta.ts.user.application.data.CreateUserData;
+import com.javanauta.ts.user.application.data.PhoneData;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;
