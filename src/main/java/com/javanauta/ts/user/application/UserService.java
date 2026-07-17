@@ -5,7 +5,6 @@ import com.javanauta.ts.user.application.data.LoginData;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
 import com.javanauta.ts.user.presentation.converter.UserConverter;
-import com.javanauta.ts.user.presentation.dto.in.LoginRequestDTO;
 import com.javanauta.ts.user.presentation.dto.out.AddressDTO;
 import com.javanauta.ts.user.presentation.dto.out.PhoneDTO;
 import com.javanauta.ts.user.presentation.dto.out.UserDTO;
@@ -23,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -53,9 +54,8 @@ public class UserService {
         return userAuthenticator.login(loginData);
     }
 
-    public UserDTO getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
-        return userConverter.toUserDTO(user);
+    public User getUser(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
     }
 
     public void deleteUserByEmail(String email) {

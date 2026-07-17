@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -55,8 +57,9 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam("email") String email) {
-        return ResponseEntity.ok(userService.getUserByEmail(email));
+    public ResponseEntity<UserResponseDTO> getUser(@PathVariable("/{id}") UUID id) {
+        User user = userService.getUser(id);
+        return ResponseEntity.ok(userMapper.toUserDTO(user));
     }
 
     @DeleteMapping("/{email}")
