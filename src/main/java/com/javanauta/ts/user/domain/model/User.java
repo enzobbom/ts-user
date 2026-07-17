@@ -2,7 +2,8 @@ package com.javanauta.ts.user.domain.model;
 
 import com.javanauta.ts.user.domain.data.AddressData;
 import com.javanauta.ts.user.domain.data.PhoneData;
-import com.javanauta.ts.user.domain.data.UserData;
+import com.javanauta.ts.user.domain.data.CreateUserData;
+import com.javanauta.ts.user.domain.data.UpdateUserData;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Getter
@@ -22,8 +24,7 @@ import java.util.List;
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @Column(name = "name", length = 150)
     private String name;
@@ -61,20 +62,21 @@ public class User implements UserDetails {
     }
 
     private User(String name, String email, String password) {
+        this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public static User create(UserData userData) {
+    public static User create(CreateUserData createUserData) {
         User user = new User(
-                userData.name(),
-                userData.email(),
-                userData.password()
+                createUserData.name(),
+                createUserData.email(),
+                createUserData.password()
         );
 
-        user.assignAddress(new Address(userData.addressData()));
-        user.assignPhone(new Phone(userData.phoneData()));
+        user.assignAddress(new Address(createUserData.addressData()));
+        user.assignPhone(new Phone(createUserData.phoneData()));
 
         return user;
     }
@@ -89,9 +91,10 @@ public class User implements UserDetails {
         phone.setUser(this);
     }
 
-    public void update(UserData userData) {
-        if (userData.name() != null) { name = userData.name(); }
-        if (userData.password() != null) { password = userData.password(); }
+    public void update(UpdateUserData updateUserData) {
+        if (updateUserData.name() != null) { name = updateUserData.name(); }
+        if (updateUserData.email() != null) { email = updateUserData.email(); }
+        if (updateUserData.password() != null) { password = updateUserData.password(); }
     }
 
     public void updateAddress(AddressData addressData) {

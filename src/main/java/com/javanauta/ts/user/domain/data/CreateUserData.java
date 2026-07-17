@@ -1,6 +1,6 @@
 package com.javanauta.ts.user.domain.data;
 
-public record UserData(
+public record CreateUserData(
         String name,
         String email,
         String password,
