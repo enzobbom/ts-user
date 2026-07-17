@@ -58,10 +58,10 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
     }
 
-    public void deleteUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+    public void deleteUser(UUID id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
 
-        userRepository.deleteByEmail(email);
+        userRepository.deleteById(id);
         log.info("User {} deleted", user.getId());
     }
 

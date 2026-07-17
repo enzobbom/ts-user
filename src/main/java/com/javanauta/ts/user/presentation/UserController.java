@@ -51,25 +51,25 @@ public class UserController {
         return ResponseEntity.ok(authenticationMapper.toDTO(authenticationResult));
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     @Operation(summary = "Get user by email", description = "Gets the data of an user identified by their email")
     @ApiResponse(responseCode = "200", description = "User data successfully found")
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserResponseDTO> getUser(@PathVariable("/{id}") UUID id) {
+    public ResponseEntity<UserResponseDTO> getUser(@PathVariable UUID id) {
         User user = userService.getUser(id);
         return ResponseEntity.ok(userMapper.toUserDTO(user));
     }
 
-    @DeleteMapping("/{email}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "Delete user", description = "Deletes an user identified by their email")
     @ApiResponse(responseCode = "200", description = "User successfully deleted")
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email) {
-        userService.deleteUserByEmail(email);
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+        userService.deleteUser(id);
         return ResponseEntity.ok().build();
     }
 
