@@ -1,5 +1,6 @@
 package com.javanauta.ts.user.domain.model;
 
+import com.javanauta.ts.user.domain.data.AddressData;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -49,4 +50,24 @@ public class Address implements Serializable {
 
     @Column(name = "cep", length = 9)
     private String cep;
+
+    public Address(AddressData addressData) {
+        this.street = addressData.street();
+        this.number = addressData.number();
+        this.complement = addressData.complement();
+        this.city = addressData.city();
+        this.neighbourhood = addressData.neighbourhood();
+        this.state = addressData.state();
+        this.cep = addressData.cep();
+    }
+
+    public void update(AddressData addressData) {
+        if (addressData.street() != null) { street = addressData.street(); }
+        if (addressData.number() != null) { number = addressData.number(); }
+        if (addressData.complement() != null) { complement = addressData.complement(); }
+        if (addressData.city() != null) { city = addressData.city(); }
+        if (addressData.neighbourhood() != null) { neighbourhood = addressData.neighbourhood(); }
+        if (addressData.state() != null) { state = addressData.state(); }
+        if (addressData.cep() != null) { cep = addressData.cep(); }
+    }
 }
