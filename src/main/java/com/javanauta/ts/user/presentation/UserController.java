@@ -2,8 +2,11 @@ package com.javanauta.ts.user.presentation;
 
 import com.javanauta.ts.user.application.UserService;
 import com.javanauta.ts.user.application.ViaCepService;
+import com.javanauta.ts.user.application.data.AuthenticationResult;
 import com.javanauta.ts.user.presentation.dto.in.CreateUserRequestDTO;
+import com.javanauta.ts.user.presentation.dto.in.LoginRequestDTO;
 import com.javanauta.ts.user.presentation.dto.out.*;
+import com.javanauta.ts.user.presentation.mapper.AuthenticationMapper;
 import com.javanauta.ts.user.presentation.mapper.UserMapper;
 import com.javanauta.ts.user.domain.model.User;
 import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
 public class UserController {
     private final UserMapper userMapper;
+    private final AuthenticationMapper authenticationMapper;
     private final UserService userService;
     private final ViaCepService viaCepService;
 
@@ -40,8 +44,9 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully logged in")
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<String> login(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.login(userDTO));
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+        AuthenticationResult authenticationResult = userService.login(authenticationMapper.toData(loginRequestDTO));
+        return ResponseEntity.ok(authenticationMapper.toDTO(authenticationResult));
     }
 
     @GetMapping

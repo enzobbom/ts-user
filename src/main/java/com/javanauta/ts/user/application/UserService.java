@@ -1,8 +1,11 @@
 package com.javanauta.ts.user.application;
 
+import com.javanauta.ts.user.application.data.AuthenticationResult;
+import com.javanauta.ts.user.application.data.LoginData;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
 import com.javanauta.ts.user.presentation.converter.UserConverter;
+import com.javanauta.ts.user.presentation.dto.in.LoginRequestDTO;
 import com.javanauta.ts.user.presentation.dto.out.AddressDTO;
 import com.javanauta.ts.user.presentation.dto.out.PhoneDTO;
 import com.javanauta.ts.user.presentation.dto.out.UserDTO;
@@ -46,8 +49,8 @@ public class UserService {
         return savedUser;
     }
 
-    public String login(UserDTO userDTO) {
-        return userAuthenticator.login(userDTO.getEmail(), userDTO.getPassword());
+    public AuthenticationResult login(LoginData loginData) {
+        return userAuthenticator.login(loginData);
     }
 
     public UserDTO getUserByEmail(String email) {

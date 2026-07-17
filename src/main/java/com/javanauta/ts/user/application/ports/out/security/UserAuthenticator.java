@@ -1,5 +1,8 @@
 package com.javanauta.ts.user.application.ports.out.security;
 
+import com.javanauta.ts.user.application.data.AuthenticationResult;
+import com.javanauta.ts.user.application.data.LoginData;
+
 public interface UserAuthenticator {
-    public String login(String email, String password);
+    public AuthenticationResult login(LoginData loginData);
 }

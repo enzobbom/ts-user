@@ -1,5 +1,7 @@
 package com.javanauta.ts.user.infrastructure.security;
 
+import com.javanauta.ts.user.application.data.AuthenticationResult;
+import com.javanauta.ts.user.application.data.LoginData;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,12 +16,13 @@ public class SpringSecurityUserAuthenticator implements UserAuthenticator {
     private final JwtUtil jwtUtil;
 
     @Override
-    public String login(String email, String password) {
+    public AuthenticationResult login(LoginData loginData) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        email,
-                        password));
+                        loginData.email(),
+                        loginData.password()));
 
-        return "Bearer " + jwtUtil.generateToken(authentication.getName());
+        return new AuthenticationResult(
+                "Bearer " + jwtUtil.generateToken(authentication.getName()));
     }
 }
