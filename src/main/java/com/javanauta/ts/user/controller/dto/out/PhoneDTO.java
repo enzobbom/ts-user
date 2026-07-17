@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.controller.dto.in;
+package com.javanauta.ts.user.controller.dto.out;
 
 import lombok.*;
 

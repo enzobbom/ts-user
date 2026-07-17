@@ -1,6 +1,6 @@
 package com.javanauta.ts.user.controller.converter;
 
-import com.javanauta.ts.user.controller.dto.in.CepDTO;
+import com.javanauta.ts.user.controller.dto.out.CepDTO;
 import com.javanauta.ts.user.infrastructure.client.cep.dto.ExternalCepDTO;
 import org.springframework.stereotype.Component;
 

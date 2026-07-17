@@ -2,10 +2,10 @@ package com.javanauta.ts.user.controller;
 
 import com.javanauta.ts.user.application.UserService;
 import com.javanauta.ts.user.application.ViaCepService;
-import com.javanauta.ts.user.controller.dto.in.AddressDTO;
-import com.javanauta.ts.user.controller.dto.in.CepDTO;
-import com.javanauta.ts.user.controller.dto.in.PhoneDTO;
-import com.javanauta.ts.user.controller.dto.in.UserDTO;
+import com.javanauta.ts.user.controller.dto.in.CreateUserRequestDTO;
+import com.javanauta.ts.user.controller.dto.out.*;
+import com.javanauta.ts.user.controller.mapper.UserMapper;
+import com.javanauta.ts.user.domain.model.User;
 import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "user", description = "Creation, login, update and deletion of Users")
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
 public class UserController {
-
+    private final UserMapper userMapper;
     private final UserService userService;
     private final ViaCepService viaCepService;
 
@@ -30,8 +30,9 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully created")
     @ApiResponse(responseCode = "409", description = "User already registered")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.saveUser(userDTO));
+    public ResponseEntity<UserResponseDTO> saveUser(@RequestBody CreateUserRequestDTO createUserRequestDTO) {
+        User newUser = userService.createUser(userMapper.fromCreateUserRequestDTO(createUserRequestDTO));
+        return ResponseEntity.ok(userMapper.toUserDTO(newUser));
     }
 
     @PostMapping("/login")

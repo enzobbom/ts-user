@@ -1,7 +1,7 @@
 package com.javanauta.ts.user.application;
 
 import com.javanauta.ts.user.controller.converter.CepConverter;
-import com.javanauta.ts.user.controller.dto.in.CepDTO;
+import com.javanauta.ts.user.controller.dto.out.CepDTO;
 import com.javanauta.ts.user.infrastructure.client.cep.FeignCepClient;
 import com.javanauta.ts.user.infrastructure.client.cep.dto.ExternalCepDTO;
 import com.javanauta.ts.user.shared.exception.IllegalArgumentException;

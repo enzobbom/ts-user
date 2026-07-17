@@ -3,9 +3,10 @@ package com.javanauta.ts.user.application;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
 import com.javanauta.ts.user.controller.converter.UserConverter;
-import com.javanauta.ts.user.controller.dto.in.AddressDTO;
-import com.javanauta.ts.user.controller.dto.in.PhoneDTO;
-import com.javanauta.ts.user.controller.dto.in.UserDTO;
+import com.javanauta.ts.user.controller.dto.out.AddressDTO;
+import com.javanauta.ts.user.controller.dto.out.PhoneDTO;
+import com.javanauta.ts.user.controller.dto.out.UserDTO;
+import com.javanauta.ts.user.domain.data.CreateUserData;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;
@@ -18,6 +19,7 @@ import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,14 +34,16 @@ public class UserService {
     private final PhoneRepository phoneRepository;
     private static final String USER_NOT_FOUND_MSG = "User not found";
 
-    public UserDTO saveUser(UserDTO userDTO) {
-        validateEmailNotExists(userDTO.getEmail());
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+    @Transactional
+    public User createUser(CreateUserData userData) {
+        validateEmailNotExists(userData.email());
 
-        User savedUser = userRepository.save(userConverter.toUser(userDTO));
+        User newUser = User.create(userData);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        User savedUser = userRepository.save(newUser);
         log.info("User {} created", savedUser.getId());
 
-        return userConverter.toUserDTO(savedUser);
+        return savedUser;
     }
 
     public String login(UserDTO userDTO) {
