@@ -11,17 +11,30 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "phone")
+@Table(
+        name = "phones",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "user_id")
+        }
+)
 public class Phone implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "user_id",
+            nullable = false
+    )
+    private User user;
+
     @Column(name = "country_code", length = 2)
     private String countryCode;
+
     @Column(name = "area_code", length = 2)
     private String areaCode;
+
     @Column(name = "number", length = 9)
     private String number;
-    @Column(name = "user_id")
-    private Long userId;
 }

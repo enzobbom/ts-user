@@ -14,24 +14,36 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_table")
+@Table(name = "users")
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "name", length = 150)
     private String name;
+
     @Column(name = "email", length = 255)
     private String email;
+
     @Column(name = "password", length = 255)
     private String password;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private List<Address> addresses;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private List<Phone> phones;
+
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private Address address;
+
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private Phone phone;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

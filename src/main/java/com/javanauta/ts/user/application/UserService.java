@@ -42,14 +42,6 @@ public class UserService {
         return userConverter.toUserDTO(savedUser);
     }
 
-    public void validateEmailNotExists(String email) {
-        if (emailExists(email)) {throw new ConflictException("Email already registered");}
-    }
-
-    public boolean emailExists(String email) {
-        return userRepository.existsByEmail(email);
-    }
-
     public String login(UserDTO userDTO) {
         return userAuthenticator.login(userDTO.getEmail(), userDTO.getPassword());
     }
@@ -115,5 +107,15 @@ public class UserService {
         log.info("Phone {} added to user {}", savedPhone.getId(), user.getId());
 
         return userConverter.toPhoneDTO(savedPhone);
+    }
+
+    // internal helper/validation methods
+
+    private void validateEmailNotExists(String email) {
+        if (emailExists(email)) {throw new ConflictException("Email already registered");}
+    }
+
+    private boolean emailExists(String email) {
+        return userRepository.existsByEmail(email);
     }
 }
