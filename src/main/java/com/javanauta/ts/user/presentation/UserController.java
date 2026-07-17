@@ -36,7 +36,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully created")
     @ApiResponse(responseCode = "409", description = "User already registered")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserResponseDTO> saveUser(@RequestBody CreateUserRequestDTO createUserRequestDTO) {
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody CreateUserRequestDTO createUserRequestDTO) {
         User newUser = userService.createUser(userMapper.fromCreateUserRequestDTO(createUserRequestDTO));
         return ResponseEntity.ok(userMapper.toUserDTO(newUser));
     }
