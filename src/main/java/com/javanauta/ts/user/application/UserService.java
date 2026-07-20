@@ -54,6 +54,7 @@ public class UserService {
         return userPersister.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
     }
 
+    @Transactional
     public void deleteUser(UUID id) {
         User user = userPersister.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
 
@@ -61,6 +62,7 @@ public class UserService {
         log.info("User {} deleted", user.getId());
     }
 
+    @Transactional
     public User updateUser(UpdateUserData updateUserData) {
         String email = principalProvider.getEmail();
         User userToUpdate = userPersister.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
@@ -80,6 +82,7 @@ public class UserService {
         return userToUpdate;
     }
 
+    @Transactional
     public Address updateAddress(AddressData addressData) {
         String userEmail = principalProvider.getEmail();
 
@@ -91,6 +94,7 @@ public class UserService {
         return userToUpdateAddress.getAddress();
     }
 
+    @Transactional
     public Phone updatePhone(PhoneData phoneData) {
         String userEmail = principalProvider.getEmail();
 
