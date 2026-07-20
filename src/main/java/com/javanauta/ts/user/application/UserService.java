@@ -5,13 +5,9 @@ import com.javanauta.ts.user.application.ports.out.persistence.UserPersister;
 import com.javanauta.ts.user.application.ports.out.security.PrincipalProvider;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
-import com.javanauta.ts.user.presentation.converter.UserConverter;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;
-import com.javanauta.ts.user.infrastructure.persistence.AddressRepository;
-import com.javanauta.ts.user.infrastructure.persistence.PhoneRepository;
-import com.javanauta.ts.user.infrastructure.security.JwtUtil;
 import com.javanauta.ts.user.shared.exception.ConflictException;
 import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +22,9 @@ import java.util.UUID;
 @Slf4j
 public class UserService {
     private final UserPersister userPersister;
-    private final UserConverter userConverter;
     private final UserPasswordEncoder passwordEncoder;
     private final UserAuthenticator userAuthenticator;
     private final PrincipalProvider principalProvider;
-    private final JwtUtil jwtUtil;
-    private final AddressRepository addressRepository;
-    private final PhoneRepository phoneRepository;
     private static final String USER_NOT_FOUND_MSG = "User not found";
 
     @Transactional
