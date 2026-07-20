@@ -12,7 +12,6 @@ import com.javanauta.ts.user.shared.exception.ConflictException;
 import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,12 +50,12 @@ public class UserService {
     }
 
     public User getUser(UUID id) {
-        return userPersister.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        return getUserOrThrow(id);
     }
 
     @Transactional
     public void deleteUser(UUID id) {
-        User user = userPersister.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        User user = getUserOrThrow(id);
 
         userPersister.deleteById(id);
         log.info("User {} deleted", user.getId());
@@ -64,8 +63,7 @@ public class UserService {
 
     @Transactional
     public User updateUser(UpdateUserData updateUserData) {
-        String email = principalProvider.getEmail();
-        User userToUpdate = userPersister.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        User userToUpdate = getUserOrThrow(principalProvider.getEmail());
 
         if (updateUserData.password() != null) {
             updateUserData = new UpdateUserData(
@@ -84,9 +82,7 @@ public class UserService {
 
     @Transactional
     public Address updateAddress(AddressData addressData) {
-        String userEmail = principalProvider.getEmail();
-
-        User userToUpdateAddress = userPersister.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        User userToUpdateAddress = getUserOrThrow(principalProvider.getEmail());
         userToUpdateAddress.updateAddress(addressData);
 
         log.info("Address of User {} was updated", userToUpdateAddress.getId());
@@ -96,9 +92,7 @@ public class UserService {
 
     @Transactional
     public Phone updatePhone(PhoneData phoneData) {
-        String userEmail = principalProvider.getEmail();
-
-        User userToUpdatePhone = userPersister.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        User userToUpdatePhone = getUserOrThrow(principalProvider.getEmail());
         userToUpdatePhone.updatePhone(phoneData);
 
         log.info("Phone of User {} was updated", userToUpdatePhone.getId());
@@ -107,6 +101,16 @@ public class UserService {
     }
 
     // internal helper/validation methods
+
+    private User getUserOrThrow(String email) {
+        return userPersister.findByEmail(email).orElseThrow(()
+                -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+    }
+
+    private User getUserOrThrow(UUID id) {
+        return userPersister.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+    }
 
     private void validateEmailNotExists(String email) {
         if (emailExists(email)) {throw new ConflictException("Email already registered");}
