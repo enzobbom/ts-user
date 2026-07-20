@@ -12,6 +12,7 @@ import com.javanauta.ts.user.shared.exception.ConflictException;
 import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,12 +57,17 @@ public class UserService {
 
     public User updateUser(UpdateUserData updateUserData) {
         String email = principalProvider.getEmail();
-
         User userToUpdate = userPersister.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
-        userToUpdate.update(updateUserData);
-        if (userToUpdate.getPassword() != null) {
-            userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
+
+        if (updateUserData.password() != null) {
+            updateUserData = new UpdateUserData(
+                    updateUserData.name(),
+                    updateUserData.email(),
+                    passwordEncoder.encode(updateUserData.password())
+            );
         }
+
+        userToUpdate.update(updateUserData);
 
         log.info("User {} updated", userToUpdate.getId());
 
