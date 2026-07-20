@@ -1,17 +1,17 @@
 package com.javanauta.ts.user.presentation;
 
 import com.javanauta.ts.user.application.UserService;
-import com.javanauta.ts.user.application.ViaCepService;
+import com.javanauta.ts.user.application.CepService;
 import com.javanauta.ts.user.application.data.AuthenticationResult;
-import com.javanauta.ts.user.application.data.UpdateUserData;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
+import com.javanauta.ts.user.domain.model.User;
+import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
 import com.javanauta.ts.user.presentation.dto.in.*;
 import com.javanauta.ts.user.presentation.dto.out.*;
 import com.javanauta.ts.user.presentation.mapper.AuthenticationMapper;
 import com.javanauta.ts.user.presentation.mapper.UserMapper;
-import com.javanauta.ts.user.domain.model.User;
-import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
+import com.javanauta.ts.user.shared.exception.IllegalArgumentException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/user")
@@ -31,7 +32,7 @@ public class UserController {
     private final UserMapper userMapper;
     private final AuthenticationMapper authenticationMapper;
     private final UserService userService;
-    private final ViaCepService viaCepService;
+    private final CepService cepService;
 
     @PostMapping
     @Operation(summary = "Create user", description = "Creates a new user")
@@ -114,7 +115,13 @@ public class UserController {
     @ApiResponse(responseCode = "400", description = "CEP with invalid format")
     @ApiResponse(responseCode = "404", description = "CEP not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<CepDTO> getCEPDetails(@PathVariable("cep") String cep) {
-        return ResponseEntity.ok(viaCepService.getCEPDetails(cep));
+    public ResponseEntity<AddressResponseDTO> findAddressByCep(@PathVariable("cep") String cep) {
+        // To be moved to a validation annotation
+        if (!Pattern.matches("^(\\d{8}|\\d{5}-\\d{3})$", cep)) {
+            throw new IllegalArgumentException("Invalid CEP format");
+        }
+
+        Address foundAddress = cepService.getCepDetails(cep);
+        return ResponseEntity.ok(userMapper.toAddressDTO(foundAddress));
     }
 }

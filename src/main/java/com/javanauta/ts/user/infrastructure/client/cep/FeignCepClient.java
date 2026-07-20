@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface FeignCepClient {
 
     @GetMapping("/ws/{cep}/json/")
-    ExternalCepDTO getCEPDetails(@PathVariable("cep") String cep);
+    ExternalCepDTO getCepDetails(@PathVariable String cep);
 }

@@ -6,7 +6,6 @@ import lombok.*;
 @Setter
 @RequiredArgsConstructor
 public class ExternalCepDTO {
-
     private String cep;
     private String logradouro;
     private String complemento;
