@@ -4,8 +4,10 @@ import com.javanauta.ts.user.application.UserService;
 import com.javanauta.ts.user.application.ViaCepService;
 import com.javanauta.ts.user.application.data.AuthenticationResult;
 import com.javanauta.ts.user.application.data.UpdateUserData;
+import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.presentation.dto.in.CreateUserRequestDTO;
 import com.javanauta.ts.user.presentation.dto.in.LoginRequestDTO;
+import com.javanauta.ts.user.presentation.dto.in.UpdateUserAddressDTO;
 import com.javanauta.ts.user.presentation.dto.in.UpdateUserRequestDTO;
 import com.javanauta.ts.user.presentation.dto.out.*;
 import com.javanauta.ts.user.presentation.mapper.AuthenticationMapper;
@@ -92,8 +94,9 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Address not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<AddressDTO> updateAddress(@RequestBody AddressDTO addressDTO, @RequestParam("id") Long id) {
-        return ResponseEntity.ok(userService.updateAddress(id, addressDTO));
+    public ResponseEntity<AddressResponseDTO> updateAddress(@RequestBody UpdateUserAddressDTO updateUserAddressDTO) {
+        Address updatedAddress = userService.updateAddress(userMapper.fromUpdateUserAddressDTO(updateUserAddressDTO));
+        return ResponseEntity.ok(userMapper.toAddressDTO(updatedAddress));
     }
 
     @PutMapping("/phone")

@@ -1,10 +1,7 @@
 package com.javanauta.ts.user.presentation.mapper;
 
 import com.javanauta.ts.user.application.data.UpdateUserData;
-import com.javanauta.ts.user.presentation.dto.in.CreateUserAddressDTO;
-import com.javanauta.ts.user.presentation.dto.in.CreateUserPhoneDTO;
-import com.javanauta.ts.user.presentation.dto.in.CreateUserRequestDTO;
-import com.javanauta.ts.user.presentation.dto.in.UpdateUserRequestDTO;
+import com.javanauta.ts.user.presentation.dto.in.*;
 import com.javanauta.ts.user.presentation.dto.out.AddressResponseDTO;
 import com.javanauta.ts.user.presentation.dto.out.PhoneResponseDTO;
 import com.javanauta.ts.user.presentation.dto.out.UserResponseDTO;
@@ -22,6 +19,7 @@ public interface UserMapper {
     CreateUserData fromCreateUserRequestDTO(CreateUserRequestDTO createUserRequestDTO);
     UpdateUserData fromUpdateUserRequestDTO(UpdateUserRequestDTO updateUserRequestDTO);
     AddressData fromCreateUserAddressDTO(CreateUserAddressDTO createUserAddressDTO);
+    AddressData fromUpdateUserAddressDTO(UpdateUserAddressDTO updateUserAddressDTO);
     PhoneData fromCreateUserPhoneDTO(CreateUserPhoneDTO createUserPhoneDTO);
 
     UserResponseDTO toUserDTO(User user);

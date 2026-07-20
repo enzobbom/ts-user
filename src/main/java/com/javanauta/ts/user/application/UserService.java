@@ -1,8 +1,6 @@
 package com.javanauta.ts.user.application;
 
-import com.javanauta.ts.user.application.data.AuthenticationResult;
-import com.javanauta.ts.user.application.data.LoginData;
-import com.javanauta.ts.user.application.data.UpdateUserData;
+import com.javanauta.ts.user.application.data.*;
 import com.javanauta.ts.user.application.ports.out.security.PrincipalProvider;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
@@ -10,7 +8,6 @@ import com.javanauta.ts.user.presentation.converter.UserConverter;
 import com.javanauta.ts.user.presentation.dto.out.AddressDTO;
 import com.javanauta.ts.user.presentation.dto.out.PhoneDTO;
 import com.javanauta.ts.user.presentation.dto.out.UserDTO;
-import com.javanauta.ts.user.application.data.CreateUserData;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;
@@ -83,13 +80,15 @@ public class UserService {
         return userToUpdate;
     }
 
-    public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
-        Address address = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+    public Address updateAddress(AddressData addressData) {
+        String userEmail = principalProvider.getEmail();
 
-        Address updatedAddress = addressRepository.save(userConverter.updateAddress(addressDTO, address));
-        log.info("Address {} updated", updatedAddress.getId());
+        User userToUpdateAddress = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        userToUpdateAddress.updateAddress(addressData);
 
-        return userConverter.toAddressDTO(updatedAddress);
+        log.info("Address of User {} was updated", userToUpdateAddress.getId());
+
+        return userToUpdateAddress.getAddress();
     }
 
     public PhoneDTO updatePhone(Long id, PhoneDTO phoneDTO) {
