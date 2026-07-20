@@ -5,9 +5,7 @@ import com.javanauta.ts.user.application.ports.out.security.PrincipalProvider;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
 import com.javanauta.ts.user.presentation.converter.UserConverter;
-import com.javanauta.ts.user.presentation.dto.out.AddressDTO;
 import com.javanauta.ts.user.presentation.dto.out.PhoneDTO;
-import com.javanauta.ts.user.presentation.dto.out.UserDTO;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;
@@ -22,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
 import java.util.UUID;
 
 @Service
@@ -91,13 +88,15 @@ public class UserService {
         return userToUpdateAddress.getAddress();
     }
 
-    public PhoneDTO updatePhone(Long id, PhoneDTO phoneDTO) {
-        Phone phone = phoneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Phone not found"));
+    public Phone updatePhone(PhoneData phoneData) {
+        String userEmail = principalProvider.getEmail();
 
-        Phone updatedPhone = phoneRepository.save(userConverter.updatePhone(phoneDTO, phone));
-        log.info("Phone {} updated", updatedPhone.getId());
+        User userToUpdatePhone = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        userToUpdatePhone.updatePhone(phoneData);
 
-        return userConverter.toPhoneDTO(updatedPhone);
+        log.info("Phone of User {} was updated", userToUpdatePhone.getId());
+
+        return userToUpdatePhone.getPhone();
     }
 
     // internal helper/validation methods

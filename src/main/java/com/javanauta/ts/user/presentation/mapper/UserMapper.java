@@ -21,6 +21,7 @@ public interface UserMapper {
     AddressData fromCreateUserAddressDTO(CreateUserAddressDTO createUserAddressDTO);
     AddressData fromUpdateUserAddressDTO(UpdateUserAddressDTO updateUserAddressDTO);
     PhoneData fromCreateUserPhoneDTO(CreateUserPhoneDTO createUserPhoneDTO);
+    PhoneData fromUpdateUserPhoneDTO(UpdateUserPhoneDTO updateUserPhoneDTO);
 
     UserResponseDTO toUserDTO(User user);
     AddressResponseDTO toAddressDTO(Address address);

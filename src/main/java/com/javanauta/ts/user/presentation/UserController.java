@@ -5,10 +5,8 @@ import com.javanauta.ts.user.application.ViaCepService;
 import com.javanauta.ts.user.application.data.AuthenticationResult;
 import com.javanauta.ts.user.application.data.UpdateUserData;
 import com.javanauta.ts.user.domain.model.Address;
-import com.javanauta.ts.user.presentation.dto.in.CreateUserRequestDTO;
-import com.javanauta.ts.user.presentation.dto.in.LoginRequestDTO;
-import com.javanauta.ts.user.presentation.dto.in.UpdateUserAddressDTO;
-import com.javanauta.ts.user.presentation.dto.in.UpdateUserRequestDTO;
+import com.javanauta.ts.user.domain.model.Phone;
+import com.javanauta.ts.user.presentation.dto.in.*;
 import com.javanauta.ts.user.presentation.dto.out.*;
 import com.javanauta.ts.user.presentation.mapper.AuthenticationMapper;
 import com.javanauta.ts.user.presentation.mapper.UserMapper;
@@ -105,8 +103,9 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Phone not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<PhoneDTO> updatePhone(@RequestBody PhoneDTO phoneDTO, @RequestParam("id") Long id) {
-        return ResponseEntity.ok(userService.updatePhone(id, phoneDTO));
+    public ResponseEntity<PhoneResponseDTO> updatePhone(@RequestBody UpdateUserPhoneDTO updateUserPhoneDTO) {
+        Phone updatedPhone = userService.updatePhone(userMapper.fromUpdateUserPhoneDTO(updateUserPhoneDTO));
+        return ResponseEntity.ok(userMapper.toPhoneDTO(updatedPhone));
     }
 
     @GetMapping("/address/{cep}")
