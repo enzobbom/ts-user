@@ -96,26 +96,6 @@ public class UserService {
         return userConverter.toPhoneDTO(updatedPhone);
     }
 
-    public AddressDTO addAddress(String token, AddressDTO addressDTO) {
-        String email = jwtUtil.extractUsername(token.substring(7));
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
-
-        Address savedAddress = addressRepository.save(userConverter.toAddress(addressDTO, user.getId()));
-        log.info("Address {} added to user {}", savedAddress.getId(), user.getId());
-
-        return userConverter.toAddressDTO(savedAddress);
-    }
-
-    public PhoneDTO addPhone(String token, PhoneDTO phoneDTO) {
-        String email = jwtUtil.extractUsername(token.substring(7));
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
-
-        Phone savedPhone = phoneRepository.save(userConverter.toPhone(phoneDTO, user.getId()));
-        log.info("Phone {} added to user {}", savedPhone.getId(), user.getId());
-
-        return userConverter.toPhoneDTO(savedPhone);
-    }
-
     // internal helper/validation methods
 
     private void validateEmailNotExists(String email) {

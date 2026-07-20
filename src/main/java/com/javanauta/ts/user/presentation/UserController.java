@@ -103,26 +103,6 @@ public class UserController {
         return ResponseEntity.ok(userService.updatePhone(id, phoneDTO));
     }
 
-    @PostMapping("/address")
-    @Operation(summary = "Add address", description = "Adds a new address to an user identified by their email")
-    @ApiResponse(responseCode = "200", description = "New address successfully saved")
-    @ApiResponse(responseCode = "401", description = "Authentication error")
-    @ApiResponse(responseCode = "404", description = "User not found")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<AddressDTO> addAddress(@RequestBody AddressDTO addressDTO, @RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(userService.addAddress(token, addressDTO));
-    }
-
-    @PostMapping("/phone")
-    @Operation(summary = "Add phone", description = "Adds a new phone to an user identified by their email")
-    @ApiResponse(responseCode = "200", description = "New phone successfully saved")
-    @ApiResponse(responseCode = "401", description = "Authentication error")
-    @ApiResponse(responseCode = "404", description = "User not found")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<PhoneDTO> addPhone(@RequestBody PhoneDTO phoneDTO, @RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(userService.addPhone(token, phoneDTO));
-    }
-
     @GetMapping("/address/{cep}")
     @Operation(summary = "Get CEP details", description = "Gets all details of a CEP")
     @ApiResponse(responseCode = "200", description = "CEP details successfully found")
