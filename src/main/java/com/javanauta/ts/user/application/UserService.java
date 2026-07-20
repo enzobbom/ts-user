@@ -1,17 +1,16 @@
 package com.javanauta.ts.user.application;
 
 import com.javanauta.ts.user.application.data.*;
+import com.javanauta.ts.user.application.ports.out.persistence.UserPersister;
 import com.javanauta.ts.user.application.ports.out.security.PrincipalProvider;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
 import com.javanauta.ts.user.presentation.converter.UserConverter;
-import com.javanauta.ts.user.presentation.dto.out.PhoneDTO;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;
 import com.javanauta.ts.user.infrastructure.persistence.AddressRepository;
 import com.javanauta.ts.user.infrastructure.persistence.PhoneRepository;
-import com.javanauta.ts.user.infrastructure.persistence.UserRepository;
 import com.javanauta.ts.user.infrastructure.security.JwtUtil;
 import com.javanauta.ts.user.shared.exception.ConflictException;
 import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
@@ -26,7 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
-    private final UserRepository userRepository;
+    private final UserPersister userPersister;
     private final UserConverter userConverter;
     private final UserPasswordEncoder passwordEncoder;
     private final UserAuthenticator userAuthenticator;
@@ -42,7 +41,7 @@ public class UserService {
 
         User newUser = User.create(userData);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        User savedUser = userRepository.save(newUser);
+        User savedUser = userPersister.save(newUser);
         log.info("User {} created", savedUser.getId());
 
         return savedUser;
@@ -53,20 +52,20 @@ public class UserService {
     }
 
     public User getUser(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        return userPersister.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
     }
 
     public void deleteUser(UUID id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        User user = userPersister.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
 
-        userRepository.deleteById(id);
+        userPersister.deleteById(id);
         log.info("User {} deleted", user.getId());
     }
 
     public User updateUser(UpdateUserData updateUserData) {
         String email = principalProvider.getEmail();
 
-        User userToUpdate = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        User userToUpdate = userPersister.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
         userToUpdate.update(updateUserData);
         if (userToUpdate.getPassword() != null) {
             userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
@@ -80,7 +79,7 @@ public class UserService {
     public Address updateAddress(AddressData addressData) {
         String userEmail = principalProvider.getEmail();
 
-        User userToUpdateAddress = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        User userToUpdateAddress = userPersister.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
         userToUpdateAddress.updateAddress(addressData);
 
         log.info("Address of User {} was updated", userToUpdateAddress.getId());
@@ -91,7 +90,7 @@ public class UserService {
     public Phone updatePhone(PhoneData phoneData) {
         String userEmail = principalProvider.getEmail();
 
-        User userToUpdatePhone = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        User userToUpdatePhone = userPersister.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
         userToUpdatePhone.updatePhone(phoneData);
 
         log.info("Phone of User {} was updated", userToUpdatePhone.getId());
@@ -106,6 +105,6 @@ public class UserService {
     }
 
     private boolean emailExists(String email) {
-        return userRepository.existsByEmail(email);
+        return userPersister.existsByEmail(email);
     }
 }

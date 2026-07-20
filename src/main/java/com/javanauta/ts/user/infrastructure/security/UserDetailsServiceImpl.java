@@ -1,7 +1,7 @@
 package com.javanauta.ts.user.infrastructure.security;
 
+import com.javanauta.ts.user.application.ports.out.persistence.UserPersister;
 import com.javanauta.ts.user.domain.model.User;
-import com.javanauta.ts.user.infrastructure.persistence.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,18 +9,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+    private final UserPersister userPersister;
 
-    private final UserRepository userRepository;
-
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserDetailsServiceImpl(UserPersister userPersister) {
+        this.userPersister = userPersister;
     }
 
     // Loads user details by email
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Searches for user in the database by email
-        User user = userRepository.findByEmail(email)
+        User user = userPersister.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
 
         // Creates and returns UserDetails based on the found user
