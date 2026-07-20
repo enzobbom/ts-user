@@ -81,8 +81,8 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UpdateUserRequestDTO updateUserRequestDTO, @RequestHeader("Authorization") String token) {
-        User updatedUser = userService.updateUser(token, userMapper.fromUpdateUserRequestDTO(updateUserRequestDTO));
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
+        User updatedUser = userService.updateUser(userMapper.fromUpdateUserRequestDTO(updateUserRequestDTO));
         return ResponseEntity.ok(userMapper.toUserDTO(updatedUser));
     }
 

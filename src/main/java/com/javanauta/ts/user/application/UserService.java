@@ -3,6 +3,7 @@ package com.javanauta.ts.user.application;
 import com.javanauta.ts.user.application.data.AuthenticationResult;
 import com.javanauta.ts.user.application.data.LoginData;
 import com.javanauta.ts.user.application.data.UpdateUserData;
+import com.javanauta.ts.user.application.ports.out.security.PrincipalProvider;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
 import com.javanauta.ts.user.presentation.converter.UserConverter;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @Service
@@ -34,6 +36,7 @@ public class UserService {
     private final UserConverter userConverter;
     private final UserPasswordEncoder passwordEncoder;
     private final UserAuthenticator userAuthenticator;
+    private final PrincipalProvider principalProvider;
     private final JwtUtil jwtUtil;
     private final AddressRepository addressRepository;
     private final PhoneRepository phoneRepository;
@@ -66,8 +69,8 @@ public class UserService {
         log.info("User {} deleted", user.getId());
     }
 
-    public User updateUser(String token, UpdateUserData updateUserData) {
-        String email = jwtUtil.extractUsername(token.substring(7));
+    public User updateUser(UpdateUserData updateUserData) {
+        String email = principalProvider.getEmail();
 
         User userToUpdate = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
         userToUpdate.update(updateUserData);
