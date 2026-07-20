@@ -2,6 +2,7 @@ package com.javanauta.ts.user.application;
 
 import com.javanauta.ts.user.application.data.AuthenticationResult;
 import com.javanauta.ts.user.application.data.LoginData;
+import com.javanauta.ts.user.application.data.UpdateUserData;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
 import com.javanauta.ts.user.presentation.converter.UserConverter;
@@ -65,17 +66,18 @@ public class UserService {
         log.info("User {} deleted", user.getId());
     }
 
-    public UserDTO updateUser(String token, UserDTO userDTO) {
+    public User updateUser(String token, UpdateUserData updateUserData) {
         String email = jwtUtil.extractUsername(token.substring(7));
 
-        userDTO.setPassword(userDTO.getPassword() != null ? passwordEncoder.encode(userDTO.getPassword()) : null);
+        User userToUpdate = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        userToUpdate.update(updateUserData);
+        if (userToUpdate.getPassword() != null) {
+            userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
+        }
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
-        User updatedUser = userRepository.save(userConverter.updateUser(userDTO, user));
+        log.info("User {} updated", userToUpdate.getId());
 
-        log.info("User {} updated", updatedUser.getId());
-
-        return userConverter.toUserDTO(updatedUser);
+        return userToUpdate;
     }
 
     public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {

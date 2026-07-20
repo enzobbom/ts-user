@@ -3,8 +3,10 @@ package com.javanauta.ts.user.presentation;
 import com.javanauta.ts.user.application.UserService;
 import com.javanauta.ts.user.application.ViaCepService;
 import com.javanauta.ts.user.application.data.AuthenticationResult;
+import com.javanauta.ts.user.application.data.UpdateUserData;
 import com.javanauta.ts.user.presentation.dto.in.CreateUserRequestDTO;
 import com.javanauta.ts.user.presentation.dto.in.LoginRequestDTO;
+import com.javanauta.ts.user.presentation.dto.in.UpdateUserRequestDTO;
 import com.javanauta.ts.user.presentation.dto.out.*;
 import com.javanauta.ts.user.presentation.mapper.AuthenticationMapper;
 import com.javanauta.ts.user.presentation.mapper.UserMapper;
@@ -79,8 +81,9 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(userService.updateUser(token, userDTO));
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UpdateUserRequestDTO updateUserRequestDTO, @RequestHeader("Authorization") String token) {
+        User updatedUser = userService.updateUser(token, userMapper.fromUpdateUserRequestDTO(updateUserRequestDTO));
+        return ResponseEntity.ok(userMapper.toUserDTO(updatedUser));
     }
 
     @PutMapping("/address")
