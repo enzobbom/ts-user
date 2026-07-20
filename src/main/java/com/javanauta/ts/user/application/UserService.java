@@ -32,9 +32,15 @@ public class UserService {
     public User createUser(CreateUserData userData) {
         validateEmailNotExists(userData.email());
 
-        User newUser = User.create(userData);
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        User savedUser = userPersister.save(newUser);
+        userData = new CreateUserData(
+                userData.name(),
+                userData.email(),
+                passwordEncoder.encode(userData.password()),
+                userData.addressData(),
+                userData.phoneData()
+        );
+
+        User savedUser = userPersister.save(User.create(userData));
         log.info("User {} created", savedUser.getId());
 
         return savedUser;
