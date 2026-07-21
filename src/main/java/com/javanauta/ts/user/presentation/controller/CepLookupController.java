@@ -2,9 +2,9 @@ package com.javanauta.ts.user.presentation.controller;
 
 import com.javanauta.ts.user.application.CepService;
 import com.javanauta.ts.user.application.data.AddressCepLookupData;
-import com.javanauta.ts.user.infrastructure.client.cep.mapper.CepMapper;
 import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
 import com.javanauta.ts.user.presentation.dto.out.AddressCepLookupResponseDTO;
+import com.javanauta.ts.user.presentation.mapper.CepMapper;
 import com.javanauta.ts.user.presentation.path.ApiPaths;
 import com.javanauta.ts.user.shared.exception.IllegalArgumentException;
 import io.swagger.v3.oas.annotations.Operation;

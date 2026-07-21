@@ -3,7 +3,7 @@ package com.javanauta.ts.user.infrastructure.client.cep;
 import com.javanauta.ts.user.application.data.AddressCepLookupData;
 import com.javanauta.ts.user.application.ports.out.client.cep.ExternalCepProvider;
 import com.javanauta.ts.user.infrastructure.client.cep.dto.ExternalCepDTO;
-import com.javanauta.ts.user.infrastructure.client.cep.mapper.CepMapper;
+import com.javanauta.ts.user.infrastructure.client.cep.mapper.ExternalCepMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ExternalCepProviderAdapter implements ExternalCepProvider {
     private final FeignCepClient feignCepClient;
-    private final CepMapper cepMapper;
+    private final ExternalCepMapper externalCepMapper;
 
     @Override
     public AddressCepLookupData getCepDetails(String cep) {
@@ -20,7 +20,7 @@ public class ExternalCepProviderAdapter implements ExternalCepProvider {
             return null;
         }
 
-        return cepMapper.toAddressData(externalCepDTO);
+        return externalCepMapper.toAddressData(externalCepDTO);
     }
 }
 
