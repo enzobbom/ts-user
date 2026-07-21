@@ -6,7 +6,6 @@ import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
 import com.javanauta.ts.user.presentation.dto.out.AddressCepLookupResponseDTO;
 import com.javanauta.ts.user.presentation.mapper.CepMapper;
 import com.javanauta.ts.user.presentation.path.ApiPaths;
-import com.javanauta.ts.user.shared.exception.IllegalArgumentException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping(ApiPaths.CEP_V1)
@@ -35,11 +32,6 @@ public class CepLookupController {
     @ApiResponse(responseCode = "404", description = "CEP not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<AddressCepLookupResponseDTO> findAddressByCep(@PathVariable("cep") String cep) {
-        // To be moved to a validation annotation
-        if (!Pattern.matches("^(\\d{8}|\\d{5}-\\d{3})$", cep)) {
-            throw new IllegalArgumentException("Invalid CEP format");
-        }
-
         AddressCepLookupData foundAddress = cepService.getCepDetails(cep);
         return ResponseEntity.ok(cepMapper.toAddressDTO(foundAddress));
     }
