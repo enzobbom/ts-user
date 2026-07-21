@@ -12,15 +12,19 @@ import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserMapper {
+    @Mapping(source = "address", target = "addressData")
+    @Mapping(source = "phone", target = "phoneData")
     CreateUserData fromCreateUserRequestDTO(CreateUserRequestDTO createUserRequestDTO);
-    UpdateUserData fromUpdateUserRequestDTO(UpdateUserRequestDTO updateUserRequestDTO);
     AddressData fromCreateUserAddressDTO(CreateUserAddressDTO createUserAddressDTO);
-    AddressData fromUpdateUserAddressDTO(UpdateUserAddressDTO updateUserAddressDTO);
     PhoneData fromCreateUserPhoneDTO(CreateUserPhoneDTO createUserPhoneDTO);
+
+    UpdateUserData fromUpdateUserRequestDTO(UpdateUserRequestDTO updateUserRequestDTO);
+    AddressData fromUpdateUserAddressDTO(UpdateUserAddressDTO updateUserAddressDTO);
     PhoneData fromUpdateUserPhoneDTO(UpdateUserPhoneDTO updateUserPhoneDTO);
 
     UserResponseDTO toUserDTO(User user);
