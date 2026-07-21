@@ -33,19 +33,19 @@ public class Address implements Serializable {
     @Column(name = "street", length = 150)
     private String street;
 
-    @Column(name = "number")
+    @Column(name = "number", length = 20)
     private String number;
 
-    @Column(name = "complement", length = 60)
+    @Column(name = "complement", length = 100)
     private String complement;
 
     @Column(name = "city", length = 100)
     private String city;
 
-    @Column(name = "neighbourhood", length = 60)
+    @Column(name = "neighbourhood", length = 100)
     private String neighbourhood;
 
-    @Column(name = "state", length = 17) // length("Rio Grande do Sul") = 17
+    @Column(name = "state", length = 100)
     private String state;
 
     @Column(name = "cep", length = 9)

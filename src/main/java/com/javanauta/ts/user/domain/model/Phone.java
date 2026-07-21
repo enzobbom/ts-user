@@ -30,10 +30,10 @@ public class Phone implements Serializable {
     )
     private User user;
 
-    @Column(name = "country_code", length = 2)
+    @Column(name = "country_code", length = 3)
     private String countryCode;
 
-    @Column(name = "number", length = 9)
+    @Column(name = "number", length = 15)
     private String number;
 
     public Phone(PhoneData phoneData){
