@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.presentation;
+package com.javanauta.ts.user.presentation.controller;
 
 import com.javanauta.ts.user.application.UserService;
 import com.javanauta.ts.user.application.CepService;
@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 @RestController
