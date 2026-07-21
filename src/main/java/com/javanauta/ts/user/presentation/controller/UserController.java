@@ -1,18 +1,19 @@
 package com.javanauta.ts.user.presentation.controller;
 
 import com.javanauta.ts.user.application.UserService;
-import com.javanauta.ts.user.application.CepService;
-import com.javanauta.ts.user.application.data.AuthenticationResult;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;
 import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
-import com.javanauta.ts.user.presentation.dto.in.*;
-import com.javanauta.ts.user.presentation.dto.out.*;
-import com.javanauta.ts.user.presentation.mapper.AuthenticationMapper;
+import com.javanauta.ts.user.presentation.dto.in.CreateUserRequestDTO;
+import com.javanauta.ts.user.presentation.dto.in.UpdateUserAddressDTO;
+import com.javanauta.ts.user.presentation.dto.in.UpdateUserPhoneDTO;
+import com.javanauta.ts.user.presentation.dto.in.UpdateUserRequestDTO;
+import com.javanauta.ts.user.presentation.dto.out.AddressResponseDTO;
+import com.javanauta.ts.user.presentation.dto.out.PhoneResponseDTO;
+import com.javanauta.ts.user.presentation.dto.out.UserResponseDTO;
 import com.javanauta.ts.user.presentation.mapper.UserMapper;
 import com.javanauta.ts.user.presentation.path.ApiPaths;
-import com.javanauta.ts.user.shared.exception.IllegalArgumentException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -20,8 +21,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping(ApiPaths.USERS_V1)
@@ -64,7 +63,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/me")
+    @PatchMapping("/me")
     @Operation(summary = "Update user", description = "Updates an user identified by their email")
     @ApiResponse(responseCode = "200", description = "User successfully updated")
     @ApiResponse(responseCode = "401", description = "Authentication error")
@@ -75,7 +74,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toUserDTO(updatedUser));
     }
 
-    @PutMapping("/me/address")
+    @PatchMapping("/me/address")
     @Operation(summary = "Update user address", description = "Updates an user's address identified by its ID")
     @ApiResponse(responseCode = "200", description = "User's address successfully updated")
     @ApiResponse(responseCode = "401", description = "Authentication error")
@@ -86,7 +85,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toAddressDTO(updatedAddress));
     }
 
-    @PutMapping("/me/phone")
+    @PatchMapping("/me/phone")
     @Operation(summary = "Update user phone", description = "Updates an user's phone identified by its ID")
     @ApiResponse(responseCode = "200", description = "User's phone successfully updated")
     @ApiResponse(responseCode = "401", description = "Authentication error")
