@@ -2,7 +2,7 @@ package com.javanauta.ts.user.application.data;
 
 public record AddressData(
         String street,
-        Long number,
+        String number,
         String complement,
         String city,
         String neighbourhood,

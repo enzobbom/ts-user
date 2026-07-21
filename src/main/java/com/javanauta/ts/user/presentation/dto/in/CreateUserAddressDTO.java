@@ -7,7 +7,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public record CreateUserAddressDTO(
         String street,
-        Long number,
+        String number,
         String complement,
         String city,
         String neighbourhood,

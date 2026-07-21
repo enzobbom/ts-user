@@ -34,7 +34,7 @@ public class Address implements Serializable {
     private String street;
 
     @Column(name = "number")
-    private Long number;
+    private String number;
 
     @Column(name = "complement", length = 60)
     private String complement;
