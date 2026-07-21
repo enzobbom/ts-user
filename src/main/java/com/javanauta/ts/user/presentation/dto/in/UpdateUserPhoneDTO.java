@@ -7,6 +7,5 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public record UpdateUserPhoneDTO(
         String countryCode,
-        String areaCode,
         String number)
 {}

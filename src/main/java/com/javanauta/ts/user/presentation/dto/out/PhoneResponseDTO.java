@@ -5,7 +5,6 @@ import lombok.*;
 @Builder
 public record PhoneResponseDTO(
         String countryCode,
-        String areaCode,
         String number
 ) {
 }

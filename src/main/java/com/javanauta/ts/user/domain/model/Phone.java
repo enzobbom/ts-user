@@ -33,21 +33,16 @@ public class Phone implements Serializable {
     @Column(name = "country_code", length = 2)
     private String countryCode;
 
-    @Column(name = "area_code", length = 2)
-    private String areaCode;
-
     @Column(name = "number", length = 9)
     private String number;
 
     public Phone(PhoneData phoneData){
         this.countryCode = phoneData.countryCode();
-        this.areaCode = phoneData.areaCode();
         this.number = phoneData.number();
     }
 
     public void update(PhoneData phoneData) {
         if (phoneData.countryCode() != null) { countryCode = phoneData.countryCode(); }
-        if (phoneData.areaCode() != null) { areaCode = phoneData.areaCode(); }
         if (phoneData.number() != null) { number = phoneData.number(); }
     }
 }
