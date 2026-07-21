@@ -23,15 +23,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
-@Tag(name = "user", description = "Creation, login, update and deletion of Users")
+@Tag(name = "User", description = "Creation of new Users, update and deletion of the current User")
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
 public class UserController {
     private final UserMapper userMapper;
-    private final AuthenticationMapper authenticationMapper;
     private final UserService userService;
-    private final CepService cepService;
 
     @PostMapping
     @Operation(summary = "Create user", description = "Creates a new user")
@@ -43,7 +41,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toUserDTO(newUser));
     }
 
-    @GetMapping
+    @GetMapping("/me")
     @Operation(summary = "Get user by email", description = "Gets the data of an user identified by their email")
     @ApiResponse(responseCode = "200", description = "User data successfully found")
     @ApiResponse(responseCode = "401", description = "Authentication error")
@@ -54,7 +52,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toUserDTO(user));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/me")
     @Operation(summary = "Delete user", description = "Deletes an user identified by their email")
     @ApiResponse(responseCode = "200", description = "User successfully deleted")
     @ApiResponse(responseCode = "401", description = "Authentication error")
@@ -65,7 +63,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping
+    @PutMapping("/me")
     @Operation(summary = "Update user", description = "Updates an user identified by their email")
     @ApiResponse(responseCode = "200", description = "User successfully updated")
     @ApiResponse(responseCode = "401", description = "Authentication error")
@@ -76,7 +74,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toUserDTO(updatedUser));
     }
 
-    @PutMapping("/address")
+    @PutMapping("/me/address")
     @Operation(summary = "Update user address", description = "Updates an user's address identified by its ID")
     @ApiResponse(responseCode = "200", description = "User's address successfully updated")
     @ApiResponse(responseCode = "401", description = "Authentication error")
@@ -87,7 +85,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toAddressDTO(updatedAddress));
     }
 
-    @PutMapping("/phone")
+    @PutMapping("/me/phone")
     @Operation(summary = "Update user phone", description = "Updates an user's phone identified by its ID")
     @ApiResponse(responseCode = "200", description = "User's phone successfully updated")
     @ApiResponse(responseCode = "401", description = "Authentication error")

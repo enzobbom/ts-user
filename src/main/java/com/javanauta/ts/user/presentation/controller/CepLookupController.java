@@ -27,7 +27,7 @@ public class CepLookupController {
     private final UserMapper userMapper;
     private final CepService cepService;
 
-    @GetMapping("/address/{cep}")
+    @GetMapping("/{cep}")
     @Operation(summary = "Get CEP details", description = "Gets all details of a CEP")
     @ApiResponse(responseCode = "200", description = "CEP details successfully found")
     @ApiResponse(responseCode = "400", description = "CEP with invalid format")

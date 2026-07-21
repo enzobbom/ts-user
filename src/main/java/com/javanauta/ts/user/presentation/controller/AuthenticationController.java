@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping
 @RequiredArgsConstructor
 //@Tag(name = "user", description = "Creation, login, update and deletion of Users")
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
