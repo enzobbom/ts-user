@@ -1,10 +1,10 @@
 package com.javanauta.ts.user.presentation.controller;
 
 import com.javanauta.ts.user.application.CepService;
-import com.javanauta.ts.user.domain.model.Address;
+import com.javanauta.ts.user.application.data.AddressCepLookupData;
+import com.javanauta.ts.user.infrastructure.client.cep.mapper.CepMapper;
 import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
-import com.javanauta.ts.user.presentation.dto.out.AddressResponseDTO;
-import com.javanauta.ts.user.presentation.mapper.UserMapper;
+import com.javanauta.ts.user.presentation.dto.out.AddressCepLookupResponseDTO;
 import com.javanauta.ts.user.presentation.path.ApiPaths;
 import com.javanauta.ts.user.shared.exception.IllegalArgumentException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,8 +25,8 @@ import java.util.regex.Pattern;
 //@Tag(name = "user", description = "Creation, login, update and deletion of Users")
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
 public class CepLookupController {
-    private final UserMapper userMapper;
     private final CepService cepService;
+    private final CepMapper cepMapper;
 
     @GetMapping("/{cep}")
     @Operation(summary = "Get CEP details", description = "Gets all details of a CEP")
@@ -34,13 +34,13 @@ public class CepLookupController {
     @ApiResponse(responseCode = "400", description = "CEP with invalid format")
     @ApiResponse(responseCode = "404", description = "CEP not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<AddressResponseDTO> findAddressByCep(@PathVariable("cep") String cep) {
+    public ResponseEntity<AddressCepLookupResponseDTO> findAddressByCep(@PathVariable("cep") String cep) {
         // To be moved to a validation annotation
         if (!Pattern.matches("^(\\d{8}|\\d{5}-\\d{3})$", cep)) {
             throw new IllegalArgumentException("Invalid CEP format");
         }
 
-        Address foundAddress = cepService.getCepDetails(cep);
-        return ResponseEntity.ok(userMapper.toAddressDTO(foundAddress));
+        AddressCepLookupData foundAddress = cepService.getCepDetails(cep);
+        return ResponseEntity.ok(cepMapper.toAddressDTO(foundAddress));
     }
 }

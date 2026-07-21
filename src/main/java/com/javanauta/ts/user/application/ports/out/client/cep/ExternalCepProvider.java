@@ -1,7 +1,7 @@
 package com.javanauta.ts.user.application.ports.out.client.cep;
 
-import com.javanauta.ts.user.domain.model.Address;
+import com.javanauta.ts.user.application.data.AddressCepLookupData;
 
 public interface ExternalCepProvider {
-    Address getCepDetails(String cep);
+    AddressCepLookupData getCepDetails(String cep);
 }
