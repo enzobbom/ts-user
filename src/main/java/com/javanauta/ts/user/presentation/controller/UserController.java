@@ -18,8 +18,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "User", description = "Creation of new Users, update and deletion of the current User")
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
+@Validated
 public class UserController {
     private final UserMapper userMapper;
     private final UserService userService;
@@ -36,7 +39,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully created")
     @ApiResponse(responseCode = "409", description = "User already registered")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody CreateUserRequestDTO createUserRequestDTO) {
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody CreateUserRequestDTO createUserRequestDTO) {
         User newUser = userService.createUser(userMapper.fromCreateUserRequestDTO(createUserRequestDTO));
         return ResponseEntity.ok(userMapper.toUserDTO(newUser));
     }
@@ -69,7 +72,7 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
+    public ResponseEntity<UserResponseDTO> updateUser(@Valid @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
         User updatedUser = userService.updateUser(userMapper.fromUpdateUserRequestDTO(updateUserRequestDTO));
         return ResponseEntity.ok(userMapper.toUserDTO(updatedUser));
     }
@@ -80,7 +83,7 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Address not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<AddressResponseDTO> updateAddress(@RequestBody UpdateUserAddressDTO updateUserAddressDTO) {
+    public ResponseEntity<AddressResponseDTO> updateAddress(@Valid @RequestBody UpdateUserAddressDTO updateUserAddressDTO) {
         Address updatedAddress = userService.updateAddress(userMapper.fromUpdateUserAddressDTO(updateUserAddressDTO));
         return ResponseEntity.ok(userMapper.toAddressDTO(updatedAddress));
     }
@@ -91,7 +94,7 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Phone not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<PhoneResponseDTO> updatePhone(@RequestBody UpdateUserPhoneDTO updateUserPhoneDTO) {
+    public ResponseEntity<PhoneResponseDTO> updatePhone(@Valid @RequestBody UpdateUserPhoneDTO updateUserPhoneDTO) {
         Phone updatedPhone = userService.updatePhone(userMapper.fromUpdateUserPhoneDTO(updateUserPhoneDTO));
         return ResponseEntity.ok(userMapper.toPhoneDTO(updatedPhone));
     }

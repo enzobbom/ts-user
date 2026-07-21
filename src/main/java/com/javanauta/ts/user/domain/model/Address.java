@@ -64,9 +64,9 @@ public class Address implements Serializable {
     public void update(AddressData addressData) {
         if (addressData.street() != null) { street = addressData.street(); }
         if (addressData.number() != null) { number = addressData.number(); }
-        if (addressData.complement() != null) { complement = addressData.complement(); }
+        if (addressData.complement() != null) { complement = addressData.complement().isBlank() ? null : addressData.complement(); }
         if (addressData.city() != null) { city = addressData.city(); }
-        if (addressData.neighbourhood() != null) { neighbourhood = addressData.neighbourhood(); }
+        if (addressData.neighbourhood() != null) { neighbourhood = addressData.neighbourhood().isBlank() ? null : addressData.neighbourhood(); }
         if (addressData.state() != null) { state = addressData.state(); }
         if (addressData.cep() != null) { cep = addressData.cep(); }
     }

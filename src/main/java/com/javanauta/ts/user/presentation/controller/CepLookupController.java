@@ -6,9 +6,11 @@ import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
 import com.javanauta.ts.user.presentation.dto.out.AddressCepLookupResponseDTO;
 import com.javanauta.ts.user.presentation.mapper.CepMapper;
 import com.javanauta.ts.user.presentation.path.ApiPaths;
+import com.javanauta.ts.user.presentation.validation.Cep;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +33,7 @@ public class CepLookupController {
     @ApiResponse(responseCode = "400", description = "CEP with invalid format")
     @ApiResponse(responseCode = "404", description = "CEP not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<AddressCepLookupResponseDTO> findAddressByCep(@PathVariable("cep") String cep) {
+    public ResponseEntity<AddressCepLookupResponseDTO> findAddressByCep(@NotBlank @Cep @PathVariable("cep") String cep) {
         AddressCepLookupData foundAddress = cepService.getCepDetails(cep);
         return ResponseEntity.ok(cepMapper.toAddressDTO(foundAddress));
     }

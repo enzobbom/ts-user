@@ -1,16 +1,19 @@
 package com.javanauta.ts.user.presentation.dto.in;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 
 @Builder
 @Jacksonized
 public record CreateUserRequestDTO(
-    String name,
-    String email,
-    String password,
-    CreateUserAddressDTO address,
-    CreateUserPhoneDTO phone
+    @NotBlank String name,
+    @NotBlank @Email String email,
+    @NotBlank String password,
+    @NotNull CreateUserAddressDTO address,
+    @NotNull CreateUserPhoneDTO phone
 )
 {}
 
