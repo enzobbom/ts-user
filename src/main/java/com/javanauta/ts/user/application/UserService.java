@@ -107,11 +107,6 @@ public class UserService {
                 -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
     }
 
-    private User getUserOrThrow(UUID id) {
-        return userPersister.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
-    }
-
     private void validateEmailNotExists(String email) {
         if (emailExists(email)) {throw new ConflictException("Email already registered");}
     }
