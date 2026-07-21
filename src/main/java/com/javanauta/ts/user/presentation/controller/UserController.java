@@ -43,16 +43,6 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toUserDTO(newUser));
     }
 
-    @PostMapping("/login")
-    @Operation(summary = "User login", description = "Logs an existing user in")
-    @ApiResponse(responseCode = "200", description = "User successfully logged in")
-    @ApiResponse(responseCode = "401", description = "Authentication error")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO) {
-        AuthenticationResult authenticationResult = userService.login(authenticationMapper.toData(loginRequestDTO));
-        return ResponseEntity.ok(authenticationMapper.toDTO(authenticationResult));
-    }
-
     @GetMapping
     @Operation(summary = "Get user by email", description = "Gets the data of an user identified by their email")
     @ApiResponse(responseCode = "200", description = "User data successfully found")
@@ -106,21 +96,5 @@ public class UserController {
     public ResponseEntity<PhoneResponseDTO> updatePhone(@RequestBody UpdateUserPhoneDTO updateUserPhoneDTO) {
         Phone updatedPhone = userService.updatePhone(userMapper.fromUpdateUserPhoneDTO(updateUserPhoneDTO));
         return ResponseEntity.ok(userMapper.toPhoneDTO(updatedPhone));
-    }
-
-    @GetMapping("/address/{cep}")
-    @Operation(summary = "Get CEP details", description = "Gets all details of a CEP")
-    @ApiResponse(responseCode = "200", description = "CEP details successfully found")
-    @ApiResponse(responseCode = "400", description = "CEP with invalid format")
-    @ApiResponse(responseCode = "404", description = "CEP not found")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<AddressResponseDTO> findAddressByCep(@PathVariable("cep") String cep) {
-        // To be moved to a validation annotation
-        if (!Pattern.matches("^(\\d{8}|\\d{5}-\\d{3})$", cep)) {
-            throw new IllegalArgumentException("Invalid CEP format");
-        }
-
-        Address foundAddress = cepService.getCepDetails(cep);
-        return ResponseEntity.ok(userMapper.toAddressDTO(foundAddress));
     }
 }
