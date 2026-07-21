@@ -11,6 +11,7 @@ import com.javanauta.ts.user.presentation.dto.in.*;
 import com.javanauta.ts.user.presentation.dto.out.*;
 import com.javanauta.ts.user.presentation.mapper.AuthenticationMapper;
 import com.javanauta.ts.user.presentation.mapper.UserMapper;
+import com.javanauta.ts.user.presentation.path.ApiPaths;
 import com.javanauta.ts.user.shared.exception.IllegalArgumentException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(ApiPaths.USERS_V1)
 @RequiredArgsConstructor
 @Tag(name = "User", description = "Creation of new Users, update and deletion of the current User")
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)

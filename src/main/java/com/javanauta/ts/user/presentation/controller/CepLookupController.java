@@ -5,6 +5,7 @@ import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
 import com.javanauta.ts.user.presentation.dto.out.AddressResponseDTO;
 import com.javanauta.ts.user.presentation.mapper.UserMapper;
+import com.javanauta.ts.user.presentation.path.ApiPaths;
 import com.javanauta.ts.user.shared.exception.IllegalArgumentException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/ceps")
+@RequestMapping(ApiPaths.CEP_V1)
 @RequiredArgsConstructor
 //@Tag(name = "user", description = "Creation, login, update and deletion of Users")
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)

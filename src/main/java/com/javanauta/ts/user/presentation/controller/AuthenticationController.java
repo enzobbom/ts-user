@@ -6,6 +6,7 @@ import com.javanauta.ts.user.infrastructure.security.config.SecurityConfig;
 import com.javanauta.ts.user.presentation.dto.in.LoginRequestDTO;
 import com.javanauta.ts.user.presentation.dto.out.LoginResponseDTO;
 import com.javanauta.ts.user.presentation.mapper.AuthenticationMapper;
+import com.javanauta.ts.user.presentation.path.ApiPaths;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping(ApiPaths.AUTH_V1)
 @RequiredArgsConstructor
 //@Tag(name = "user", description = "Creation, login, update and deletion of Users")
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
