@@ -49,15 +49,15 @@ public class UserService {
         return userAuthenticator.login(loginData);
     }
 
-    public User getUser(UUID id) {
-        return getUserOrThrow(id);
+    public User getUser() {
+        return getUserOrThrow(principalProvider.getEmail());
     }
 
     @Transactional
-    public void deleteUser(UUID id) {
-        User user = getUserOrThrow(id);
+    public void deleteUser() {
+        User user = getUserOrThrow(principalProvider.getEmail());
+        userPersister.delete(user);
 
-        userPersister.deleteById(id);
         log.info("User {} deleted", user.getId());
     }
 

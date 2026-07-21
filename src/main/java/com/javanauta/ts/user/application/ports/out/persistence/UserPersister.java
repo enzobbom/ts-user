@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public interface UserPersister {
     User save(User user);
+    void delete(User user);
     boolean existsByEmail(String email);
     Optional<User> findByEmail(String email);
     Optional<User> findById(UUID id);

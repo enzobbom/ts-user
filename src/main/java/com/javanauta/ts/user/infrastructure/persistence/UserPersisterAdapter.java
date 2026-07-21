@@ -19,6 +19,11 @@ public class UserPersisterAdapter implements UserPersister {
     }
 
     @Override
+    public void delete(User user) {
+        jpaUserRepository.delete(user);
+    }
+
+    @Override
     public boolean existsByEmail(String email) {
         return jpaUserRepository.existsByEmail(email);
     }
