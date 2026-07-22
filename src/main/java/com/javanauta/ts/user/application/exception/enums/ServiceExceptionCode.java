@@ -8,7 +8,6 @@ public enum ServiceExceptionCode implements ExceptionCode {
     USER_NOT_FOUND ("User was not found"),
     INEXISTENT_CEP ("CEP requested for lookup does not exist");
 
-
     private final String defaultMessage;
 
     ServiceExceptionCode(String defaultMessage) {
