@@ -1,6 +1,7 @@
 package com.javanauta.ts.user.infrastructure.security.config;
 
 import com.javanauta.ts.user.infrastructure.security.JwtRequestFilter;
+import com.javanauta.ts.user.presentation.path.ApiPaths;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +56,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/user").permitAll() // Allows access to POST /user endpoint
-                        .requestMatchers(HttpMethod.POST, "/user/login").permitAll() // Allows access to login endpoint
-                        .requestMatchers(HttpMethod.GET, "/user/address/**").permitAll() // Allows access to login endpoint
+                        .requestMatchers(HttpMethod.POST, ApiPaths.USERS_V1).permitAll()
+                        .requestMatchers(HttpMethod.POST, ApiPaths.AUTH_V1 + "/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, ApiPaths.CEP_V1 + "/**").permitAll()
                         .anyRequest().authenticated() // Requires authentication for all other requests
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Adds JWT filter before default authentication filter
