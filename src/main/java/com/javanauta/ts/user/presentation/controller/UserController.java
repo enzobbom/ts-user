@@ -1,5 +1,6 @@
 package com.javanauta.ts.user.presentation.controller;
 
+import com.javanauta.ts.apicontract.response.SuccessResponse;
 import com.javanauta.ts.user.application.UserService;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
@@ -9,9 +10,6 @@ import com.javanauta.ts.user.presentation.dto.in.CreateUserRequestDTO;
 import com.javanauta.ts.user.presentation.dto.in.UpdateUserAddressDTO;
 import com.javanauta.ts.user.presentation.dto.in.UpdateUserPhoneDTO;
 import com.javanauta.ts.user.presentation.dto.in.UpdateUserRequestDTO;
-import com.javanauta.ts.user.presentation.dto.out.AddressResponseDTO;
-import com.javanauta.ts.user.presentation.dto.out.PhoneResponseDTO;
-import com.javanauta.ts.user.presentation.dto.out.UserResponseDTO;
 import com.javanauta.ts.user.presentation.mapper.UserMapper;
 import com.javanauta.ts.user.presentation.path.ApiPaths;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +18,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,9 +38,15 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully created")
     @ApiResponse(responseCode = "409", description = "User already registered")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody CreateUserRequestDTO createUserRequestDTO) {
-        User newUser = userService.createUser(userMapper.fromCreateUserRequestDTO(createUserRequestDTO));
-        return ResponseEntity.ok(userMapper.toUserDTO(newUser));
+    public ResponseEntity<SuccessResponse> createUser(@Valid @RequestBody CreateUserRequestDTO createUserRequestDTO) {
+        User createdUser = userService.createUser(userMapper.fromCreateUserRequestDTO(createUserRequestDTO));
+
+        HttpStatus httpCode = HttpStatus.OK;
+        SuccessResponse successResponse = new SuccessResponse(
+                httpCode.value(),
+                userMapper.toUserDTO(createdUser));
+
+        return ResponseEntity.status(httpCode).body(successResponse);
     }
 
     @GetMapping("/me")
@@ -50,9 +55,15 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserResponseDTO> getUser() {
+    public ResponseEntity<SuccessResponse> getUser() {
         User user = userService.getUser();
-        return ResponseEntity.ok(userMapper.toUserDTO(user));
+
+        HttpStatus httpCode = HttpStatus.OK;
+        SuccessResponse successResponse = new SuccessResponse(
+                httpCode.value(),
+                userMapper.toUserDTO(user));
+
+        return ResponseEntity.status(httpCode).body(successResponse);
     }
 
     @DeleteMapping("/me")
@@ -63,7 +74,7 @@ public class UserController {
     @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<Void> deleteUser() {
         userService.deleteUser();
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PatchMapping("/me")
@@ -72,9 +83,15 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<UserResponseDTO> updateUser(@Valid @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
+    public ResponseEntity<SuccessResponse> updateUser(@Valid @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
         User updatedUser = userService.updateUser(userMapper.fromUpdateUserRequestDTO(updateUserRequestDTO));
-        return ResponseEntity.ok(userMapper.toUserDTO(updatedUser));
+
+        HttpStatus httpCode = HttpStatus.OK;
+        SuccessResponse successResponse = new SuccessResponse(
+                httpCode.value(),
+                userMapper.toUserDTO(updatedUser));
+
+        return ResponseEntity.status(httpCode).body(successResponse);
     }
 
     @PatchMapping("/me/address")
@@ -83,9 +100,15 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Address not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<AddressResponseDTO> updateAddress(@Valid @RequestBody UpdateUserAddressDTO updateUserAddressDTO) {
+    public ResponseEntity<SuccessResponse> updateAddress(@Valid @RequestBody UpdateUserAddressDTO updateUserAddressDTO) {
         Address updatedAddress = userService.updateAddress(userMapper.fromUpdateUserAddressDTO(updateUserAddressDTO));
-        return ResponseEntity.ok(userMapper.toAddressDTO(updatedAddress));
+
+        HttpStatus httpCode = HttpStatus.OK;
+        SuccessResponse successResponse = new SuccessResponse(
+                httpCode.value(),
+                userMapper.toAddressDTO(updatedAddress));
+
+        return ResponseEntity.status(httpCode).body(successResponse);
     }
 
     @PatchMapping("/me/phone")
@@ -94,8 +117,14 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Phone not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<PhoneResponseDTO> updatePhone(@Valid @RequestBody UpdateUserPhoneDTO updateUserPhoneDTO) {
+    public ResponseEntity<SuccessResponse> updatePhone(@Valid @RequestBody UpdateUserPhoneDTO updateUserPhoneDTO) {
         Phone updatedPhone = userService.updatePhone(userMapper.fromUpdateUserPhoneDTO(updateUserPhoneDTO));
-        return ResponseEntity.ok(userMapper.toPhoneDTO(updatedPhone));
+
+        HttpStatus httpCode = HttpStatus.OK;
+        SuccessResponse successResponse = new SuccessResponse(
+                httpCode.value(),
+                userMapper.toPhoneDTO(updatedPhone));
+
+        return ResponseEntity.status(httpCode).body(successResponse);
     }
 }
