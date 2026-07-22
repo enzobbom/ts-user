@@ -35,11 +35,11 @@ public class CepLookupController {
     @ApiResponse(responseCode = "400", description = "CEP with invalid format")
     @ApiResponse(responseCode = "404", description = "CEP not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<SuccessResponse> findAddressByCep(@NotBlank @Cep @PathVariable("cep") String cep) {
+    public ResponseEntity<SuccessResponse<AddressCepLookupResponseDTO>> findAddressByCep(@NotBlank @Cep @PathVariable("cep") String cep) {
         AddressCepLookupData foundAddress = cepService.getCepDetails(cep);
 
         HttpStatus httpCode = HttpStatus.OK;
-        SuccessResponse successResponse = new SuccessResponse(
+        SuccessResponse<AddressCepLookupResponseDTO> successResponse = new SuccessResponse<>(
                 httpCode.value(),
                 cepMapper.toAddressDTO(foundAddress));
 

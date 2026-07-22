@@ -10,6 +10,9 @@ import com.javanauta.ts.user.presentation.dto.in.CreateUserRequestDTO;
 import com.javanauta.ts.user.presentation.dto.in.UpdateUserAddressDTO;
 import com.javanauta.ts.user.presentation.dto.in.UpdateUserPhoneDTO;
 import com.javanauta.ts.user.presentation.dto.in.UpdateUserRequestDTO;
+import com.javanauta.ts.user.presentation.dto.out.AddressResponseDTO;
+import com.javanauta.ts.user.presentation.dto.out.PhoneResponseDTO;
+import com.javanauta.ts.user.presentation.dto.out.UserResponseDTO;
 import com.javanauta.ts.user.presentation.mapper.UserMapper;
 import com.javanauta.ts.user.presentation.path.ApiPaths;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,11 +41,11 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "User successfully created")
     @ApiResponse(responseCode = "409", description = "User already registered")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<SuccessResponse> createUser(@Valid @RequestBody CreateUserRequestDTO createUserRequestDTO) {
+    public ResponseEntity<SuccessResponse<UserResponseDTO>> createUser(@Valid @RequestBody CreateUserRequestDTO createUserRequestDTO) {
         User createdUser = userService.createUser(userMapper.fromCreateUserRequestDTO(createUserRequestDTO));
 
         HttpStatus httpCode = HttpStatus.OK;
-        SuccessResponse successResponse = new SuccessResponse(
+        SuccessResponse<UserResponseDTO> successResponse = new SuccessResponse<>(
                 httpCode.value(),
                 userMapper.toUserDTO(createdUser));
 
@@ -55,11 +58,11 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<SuccessResponse> getUser() {
+    public ResponseEntity<SuccessResponse<UserResponseDTO>> getUser() {
         User user = userService.getUser();
 
         HttpStatus httpCode = HttpStatus.OK;
-        SuccessResponse successResponse = new SuccessResponse(
+        SuccessResponse<UserResponseDTO> successResponse = new SuccessResponse<>(
                 httpCode.value(),
                 userMapper.toUserDTO(user));
 
@@ -83,11 +86,11 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<SuccessResponse> updateUser(@Valid @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
+    public ResponseEntity<SuccessResponse<UserResponseDTO>> updateUser(@Valid @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
         User updatedUser = userService.updateUser(userMapper.fromUpdateUserRequestDTO(updateUserRequestDTO));
 
         HttpStatus httpCode = HttpStatus.OK;
-        SuccessResponse successResponse = new SuccessResponse(
+        SuccessResponse<UserResponseDTO> successResponse = new SuccessResponse<>(
                 httpCode.value(),
                 userMapper.toUserDTO(updatedUser));
 
@@ -100,11 +103,11 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Address not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<SuccessResponse> updateAddress(@Valid @RequestBody UpdateUserAddressDTO updateUserAddressDTO) {
+    public ResponseEntity<SuccessResponse<AddressResponseDTO>> updateAddress(@Valid @RequestBody UpdateUserAddressDTO updateUserAddressDTO) {
         Address updatedAddress = userService.updateAddress(userMapper.fromUpdateUserAddressDTO(updateUserAddressDTO));
 
         HttpStatus httpCode = HttpStatus.OK;
-        SuccessResponse successResponse = new SuccessResponse(
+        SuccessResponse<AddressResponseDTO> successResponse = new SuccessResponse<>(
                 httpCode.value(),
                 userMapper.toAddressDTO(updatedAddress));
 
@@ -117,11 +120,11 @@ public class UserController {
     @ApiResponse(responseCode = "401", description = "Authentication error")
     @ApiResponse(responseCode = "404", description = "Phone not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<SuccessResponse> updatePhone(@Valid @RequestBody UpdateUserPhoneDTO updateUserPhoneDTO) {
+    public ResponseEntity<SuccessResponse<PhoneResponseDTO>> updatePhone(@Valid @RequestBody UpdateUserPhoneDTO updateUserPhoneDTO) {
         Phone updatedPhone = userService.updatePhone(userMapper.fromUpdateUserPhoneDTO(updateUserPhoneDTO));
 
         HttpStatus httpCode = HttpStatus.OK;
-        SuccessResponse successResponse = new SuccessResponse(
+        SuccessResponse<PhoneResponseDTO> successResponse = new SuccessResponse<>(
                 httpCode.value(),
                 userMapper.toPhoneDTO(updatedPhone));
 
