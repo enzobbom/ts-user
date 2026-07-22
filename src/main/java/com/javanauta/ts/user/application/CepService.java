@@ -1,8 +1,9 @@
 package com.javanauta.ts.user.application;
 
 import com.javanauta.ts.user.application.data.AddressCepLookupData;
+import com.javanauta.ts.user.application.exception.enums.ServiceExceptionCode;
 import com.javanauta.ts.user.application.ports.out.client.cep.ExternalCepProvider;
-import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
+import com.javanauta.ts.user.shared.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class CepService {
 
     public AddressCepLookupData getCepDetails(String cep) {
         AddressCepLookupData addressData = externalCepProvider.getCepDetails(cep);
-        if (addressData == null) { throw new ResourceNotFoundException("CEP not found"); }
+        if (addressData == null) { throw new ApplicationException(ServiceExceptionCode.INEXISTENT_CEP);}
         return addressData;
     }
 }

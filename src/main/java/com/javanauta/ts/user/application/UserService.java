@@ -1,6 +1,7 @@
 package com.javanauta.ts.user.application;
 
 import com.javanauta.ts.user.application.data.*;
+import com.javanauta.ts.user.application.exception.enums.ServiceExceptionCode;
 import com.javanauta.ts.user.application.ports.out.persistence.UserPersister;
 import com.javanauta.ts.user.application.ports.out.security.PrincipalProvider;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
@@ -8,14 +9,11 @@ import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
 import com.javanauta.ts.user.domain.model.Address;
 import com.javanauta.ts.user.domain.model.Phone;
 import com.javanauta.ts.user.domain.model.User;
-import com.javanauta.ts.user.shared.exception.ConflictException;
-import com.javanauta.ts.user.shared.exception.ResourceNotFoundException;
+import com.javanauta.ts.user.shared.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -104,11 +102,11 @@ public class UserService {
 
     private User getUserOrThrow(String email) {
         return userPersister.findByEmail(email).orElseThrow(()
-                -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+                -> new ApplicationException(ServiceExceptionCode.USER_NOT_FOUND));
     }
 
     private void validateEmailNotExists(String email) {
-        if (emailExists(email)) {throw new ConflictException("Email already registered");}
+        if (emailExists(email)) { throw new ApplicationException(ServiceExceptionCode.USER_ALREADY_EXISTS); }
     }
 
     private boolean emailExists(String email) {

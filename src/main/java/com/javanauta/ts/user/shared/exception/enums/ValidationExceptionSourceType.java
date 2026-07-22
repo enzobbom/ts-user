@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.shared.exception;
+package com.javanauta.ts.user.shared.exception.enums;
 
 public enum ValidationExceptionSourceType {
     OBJECT,     // class-level (cross-field) validation, e.g., @Valid on a class
