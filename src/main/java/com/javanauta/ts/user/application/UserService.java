@@ -44,7 +44,13 @@ public class UserService {
     }
 
     public AuthenticationResult login(LoginData loginData) {
-        return userAuthenticator.login(loginData);
+        AuthenticationResult result = userAuthenticator.login(loginData);
+
+        if (result.token() == null) {
+            throw new ApplicationException(ServiceExceptionCode.INVALID_CREDENTIALS);
+        }
+
+        return result;
     }
 
     public User getUser() {

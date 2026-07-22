@@ -5,6 +5,7 @@ import com.javanauta.ts.user.application.data.LoginData;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -17,12 +18,18 @@ public class SpringSecurityUserAuthenticator implements UserAuthenticator {
 
     @Override
     public AuthenticationResult login(LoginData loginData) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginData.email(),
-                        loginData.password()));
+        Authentication authentication;
+        try {
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginData.email(),
+                            loginData.password()));
 
-        return new AuthenticationResult(
-                "Bearer " + jwtUtil.generateToken(authentication.getName()));
+            return new AuthenticationResult(
+                    "Bearer " + jwtUtil.generateToken(authentication.getName()));
+
+        } catch (BadCredentialsException e) {
+            return new AuthenticationResult(null);
+        }
     }
 }

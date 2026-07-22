@@ -4,8 +4,10 @@ import com.javanauta.ts.user.shared.exception.ExceptionCode;
 
 public enum ServiceExceptionCode implements ExceptionCode {
     USER_ALREADY_EXISTS ("User already exists"),
+    INVALID_CREDENTIALS ("Invalid User credentials"),
     USER_NOT_FOUND ("User was not found"),
     INEXISTENT_CEP ("CEP requested for lookup does not exist");
+
 
     private final String defaultMessage;
 

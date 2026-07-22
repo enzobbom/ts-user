@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -31,6 +29,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     private static final Map<ExceptionCode, HttpStatus> BUSINESS_CODE_HTTP_STATUS_MAP = Map.of(
             ServiceExceptionCode.USER_ALREADY_EXISTS, HttpStatus.CONFLICT,
+            ServiceExceptionCode.INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED,
             ServiceExceptionCode.USER_NOT_FOUND, HttpStatus.NOT_FOUND,
             ServiceExceptionCode.INEXISTENT_CEP, HttpStatus.NOT_FOUND);
 
@@ -41,20 +40,6 @@ public class GlobalExceptionHandler {
             PresentationExceptionCode.JSON_PARSE_ERROR, HttpStatus.BAD_REQUEST,
             PresentationExceptionCode.MISSING_PARAMETER_ERROR, HttpStatus.BAD_REQUEST,
             PresentationExceptionCode.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
-
-    // Authentication errors during login attempt
-
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<String> handlerBadCredentialsException(BadCredentialsException ex) {
-        log.warn("Bad credentials exception: {}", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-    }
-
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<String> handlerAuthenticationException(AuthenticationException ex) {
-        log.warn("Authentication exception: {}", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication error");
-    }
 
     // Input validation exceptions: @Valid and @Validated
 
