@@ -1,6 +1,6 @@
 package com.javanauta.ts.user.infrastructure.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.javanauta.ts.apicontract.response.ErrorResponse;
 import com.javanauta.ts.user.infrastructure.security.exception.enums.SecurityExceptionCode;
 import jakarta.servlet.http.HttpServletRequest;
