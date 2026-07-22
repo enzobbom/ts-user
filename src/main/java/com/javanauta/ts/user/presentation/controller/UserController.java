@@ -1,5 +1,6 @@
 package com.javanauta.ts.user.presentation.controller;
 
+import com.javanauta.ts.apicontract.response.ErrorResponse;
 import com.javanauta.ts.apicontract.response.SuccessResponse;
 import com.javanauta.ts.user.application.UserService;
 import com.javanauta.ts.user.domain.model.Address;
@@ -16,7 +17,10 @@ import com.javanauta.ts.user.presentation.dto.out.UserResponseDTO;
 import com.javanauta.ts.user.presentation.mapper.UserMapper;
 import com.javanauta.ts.user.presentation.path.ApiPaths;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(ApiPaths.USERS_V1)
 @RequiredArgsConstructor
-@Tag(name = "User", description = "Creation of new Users, update and deletion of the current User")
+@Tag(name = "Users", description = "User registration, profile retrieval, updates and deletion")
 @SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
 @Validated
 public class UserController {
@@ -37,10 +41,17 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    @Operation(summary = "Create user", description = "Creates a new user")
-    @ApiResponse(responseCode = "200", description = "User successfully created")
-    @ApiResponse(responseCode = "409", description = "User already registered")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @Operation(summary = "Create user", description = "Creates a new user account")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "User successfully created",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "409", description = "User already exists",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "422", description = "Request body validation failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     public ResponseEntity<SuccessResponse<UserResponseDTO>> createUser(@Valid @RequestBody CreateUserRequestDTO createUserRequestDTO) {
         User createdUser = userService.createUser(userMapper.fromCreateUserRequestDTO(createUserRequestDTO));
 
@@ -53,11 +64,17 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    @Operation(summary = "Get user by email", description = "Gets the data of an user identified by their email")
-    @ApiResponse(responseCode = "200", description = "User data successfully found")
-    @ApiResponse(responseCode = "401", description = "Authentication error")
-    @ApiResponse(responseCode = "404", description = "User not found")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @Operation(summary = "Get current user", description = "Returns the authenticated user's profile information")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "User successfully found",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Authentication failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     public ResponseEntity<SuccessResponse<UserResponseDTO>> getUser() {
         User user = userService.getUser();
 
@@ -70,22 +87,35 @@ public class UserController {
     }
 
     @DeleteMapping("/me")
-    @Operation(summary = "Delete user", description = "Deletes an user identified by their email")
-    @ApiResponse(responseCode = "200", description = "User successfully deleted")
-    @ApiResponse(responseCode = "401", description = "Authentication error")
-    @ApiResponse(responseCode = "404", description = "User not found")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @Operation(summary = "Delete current user", description = "Deletes the authenticated user's account")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "User successfully deleted"),
+            @ApiResponse(responseCode = "401", description = "Authentication failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     public ResponseEntity<Void> deleteUser() {
         userService.deleteUser();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PatchMapping("/me")
-    @Operation(summary = "Update user", description = "Updates an user identified by their email")
-    @ApiResponse(responseCode = "200", description = "User successfully updated")
-    @ApiResponse(responseCode = "401", description = "Authentication error")
-    @ApiResponse(responseCode = "404", description = "User not found")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @Operation(summary = "Update current user", description = "Updates the authenticated user's profile information")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "User successfully updated",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Authentication failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "422", description = "Request body validation failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     public ResponseEntity<SuccessResponse<UserResponseDTO>> updateUser(@Valid @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
         User updatedUser = userService.updateUser(userMapper.fromUpdateUserRequestDTO(updateUserRequestDTO));
 
@@ -98,11 +128,29 @@ public class UserController {
     }
 
     @PatchMapping("/me/address")
-    @Operation(summary = "Update user address", description = "Updates an user's address identified by its ID")
-    @ApiResponse(responseCode = "200", description = "User's address successfully updated")
-    @ApiResponse(responseCode = "401", description = "Authentication error")
-    @ApiResponse(responseCode = "404", description = "Address not found")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @Operation(
+            summary = "Update current user's address",
+            description = """
+        Updates the authenticated user's address.
+
+        PATCH behavior:
+        - Missing fields are ignored.
+        - Fields sent as null are ignored.
+        - Send an empty string ("") to clear optional String fields ('complement', 'neighbourhood')
+        """
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Address successfully updated",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Authentication failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "422", description = "Request body validation failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     public ResponseEntity<SuccessResponse<AddressResponseDTO>> updateAddress(@Valid @RequestBody UpdateUserAddressDTO updateUserAddressDTO) {
         Address updatedAddress = userService.updateAddress(userMapper.fromUpdateUserAddressDTO(updateUserAddressDTO));
 
@@ -115,11 +163,19 @@ public class UserController {
     }
 
     @PatchMapping("/me/phone")
-    @Operation(summary = "Update user phone", description = "Updates an user's phone identified by its ID")
-    @ApiResponse(responseCode = "200", description = "User's phone successfully updated")
-    @ApiResponse(responseCode = "401", description = "Authentication error")
-    @ApiResponse(responseCode = "404", description = "Phone not found")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @Operation(summary = "Update current user's address", description = "Updates the authenticated user's phone")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Phone successfully updated",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Authentication failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "422", description = "Request body validation failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     public ResponseEntity<SuccessResponse<PhoneResponseDTO>> updatePhone(@Valid @RequestBody UpdateUserPhoneDTO updateUserPhoneDTO) {
         Phone updatedPhone = userService.updatePhone(userMapper.fromUpdateUserPhoneDTO(updateUserPhoneDTO));
 
