@@ -131,9 +131,9 @@ public class UserController {
         Updates the authenticated user's address.
 
         PATCH behavior:
-        - Missing fields are ignored.
-        - Fields sent as null are ignored.
-        - Send an empty string ("") to clear optional String fields ('complement', 'neighbourhood')
+        > Missing fields are ignored \n\n
+        > Fields sent as null are ignored \n\n
+        > Send an empty string ("") to clear optional String fields ('complement', 'neighbourhood')
         """
     )
     @ApiResponses({
