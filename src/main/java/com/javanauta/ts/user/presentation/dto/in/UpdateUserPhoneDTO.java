@@ -1,6 +1,7 @@
 package com.javanauta.ts.user.presentation.dto.in;
 
 import com.javanauta.ts.user.presentation.validation.AtLeastOneField;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 
@@ -8,6 +9,6 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @AtLeastOneField
 public record UpdateUserPhoneDTO(
-        String countryCode,
-        String number)
+        @Pattern(regexp = "^\\d{1,3}$") String countryCode,
+        @Pattern(regexp = "^\\d{1,15}$") String number)
 {}

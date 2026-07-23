@@ -2,6 +2,7 @@ package com.javanauta.ts.user.presentation.dto.in;
 
 import com.javanauta.ts.user.presentation.validation.AtLeastOneField;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 
@@ -11,7 +12,7 @@ import lombok.extern.jackson.Jacksonized;
 public record UpdateUserRequestDTO(
     String name,
     @Email String email,
-    String password
+    @Size(min = 8, max = 100) String password
 )
 {}
 
