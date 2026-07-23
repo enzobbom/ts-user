@@ -21,7 +21,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_users_email", columnNames = "email")
+        }
+)
 public class User implements UserDetails {
     @Id
     private UUID id;
@@ -29,7 +34,7 @@ public class User implements UserDetails {
     @Column(name = "name", length = 150)
     private String name;
 
-    @Column(name = "email", length = 255)
+    @Column(name = "email", length = 255, nullable = false)
     private String email;
 
     @Column(name = "password", length = 255)
