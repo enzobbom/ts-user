@@ -9,5 +9,5 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public record CreateUserPhoneDTO(
         @NotBlank @Pattern(regexp = "^\\d{1,3}$") String countryCode,
-        @NotBlank @Pattern(regexp = "^\\d{1,15}$") String number)
-{}
+        @NotBlank @Pattern(regexp = "^\\d{1,15}$") String number) {
+}

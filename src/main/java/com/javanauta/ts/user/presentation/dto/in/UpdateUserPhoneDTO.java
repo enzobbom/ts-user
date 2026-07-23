@@ -10,5 +10,5 @@ import lombok.extern.jackson.Jacksonized;
 @AtLeastOneField
 public record UpdateUserPhoneDTO(
         @Pattern(regexp = "^\\d{1,3}$") String countryCode,
-        @Pattern(regexp = "^\\d{1,15}$") String number)
-{}
+        @Pattern(regexp = "^\\d{1,15}$") String number) {
+}

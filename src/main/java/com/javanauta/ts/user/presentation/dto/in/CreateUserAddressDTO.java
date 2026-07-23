@@ -14,5 +14,5 @@ public record CreateUserAddressDTO(
         @NotBlank String city,
         String neighbourhood,
         @NotBlank String state,
-        @NotBlank @Cep String cep)
-{}
+        @NotBlank @Cep String cep) {
+}

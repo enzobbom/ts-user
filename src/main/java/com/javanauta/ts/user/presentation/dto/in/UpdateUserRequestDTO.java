@@ -10,9 +10,8 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @AtLeastOneField
 public record UpdateUserRequestDTO(
-    String name,
-    @Email String email,
-    @Size(min = 8, max = 100) String password
-)
-{}
-
+        String name,
+        @Email String email,
+        @Size(min = 8, max = 100) String password
+) {
+}

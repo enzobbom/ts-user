@@ -15,5 +15,5 @@ public record UpdateUserAddressDTO(
         String city,
         String neighbourhood,
         String state,
-        @Cep String cep)
-{}
+        @Cep String cep) {
+}
