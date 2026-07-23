@@ -37,8 +37,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     @Operation(summary = "User login", description = "Authenticates an existing user and returns an authentication token.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "User successfully authenticated",
-                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "200", description = "User successfully authenticated"),
             @ApiResponse(responseCode = "401", description = "Invalid credentials",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "422", description = "Request body validation failed",

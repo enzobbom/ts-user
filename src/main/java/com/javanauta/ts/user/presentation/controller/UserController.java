@@ -43,8 +43,7 @@ public class UserController {
     @PostMapping
     @Operation(summary = "Create user", description = "Creates a new user account")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "User successfully created",
-                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "200", description = "User successfully created"),
             @ApiResponse(responseCode = "409", description = "User already exists",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "422", description = "Request body validation failed",
@@ -66,8 +65,7 @@ public class UserController {
     @GetMapping("/me")
     @Operation(summary = "Get current user", description = "Returns the authenticated user's profile information")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "User successfully found",
-                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "200", description = "User successfully found"),
             @ApiResponse(responseCode = "401", description = "Authentication failed",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "User not found",
@@ -105,8 +103,7 @@ public class UserController {
     @PatchMapping("/me")
     @Operation(summary = "Update current user", description = "Updates the authenticated user's profile information")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "User successfully updated",
-                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "200", description = "User successfully updated"),
             @ApiResponse(responseCode = "401", description = "Authentication failed",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "User not found",
@@ -140,8 +137,7 @@ public class UserController {
         """
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Address successfully updated",
-                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "200", description = "Address successfully updated"),
             @ApiResponse(responseCode = "401", description = "Authentication failed",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "User not found",
@@ -165,8 +161,7 @@ public class UserController {
     @PatchMapping("/me/phone")
     @Operation(summary = "Update current user's address", description = "Updates the authenticated user's phone")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Phone successfully updated",
-                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "200", description = "Phone successfully updated"),
             @ApiResponse(responseCode = "401", description = "Authentication failed",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "User not found",

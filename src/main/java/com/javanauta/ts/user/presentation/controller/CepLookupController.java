@@ -37,8 +37,7 @@ public class CepLookupController {
     @GetMapping("/{cep}")
     @Operation(summary = "Lookup CEP", description = "Retrieves address information associated with a Brazilian CEP")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "CEP details successfully found",
-                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "200", description = "CEP details successfully found"),
             @ApiResponse(responseCode = "400", description = "Invalid request parameter format",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "CEP not found",
