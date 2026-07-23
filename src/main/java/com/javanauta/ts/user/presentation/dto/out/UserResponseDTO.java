@@ -9,7 +9,6 @@ public record UserResponseDTO(
         UUID id,
         String name,
         String email,
-        String password,
         AddressResponseDTO address,
         PhoneResponseDTO phone
 ) {
