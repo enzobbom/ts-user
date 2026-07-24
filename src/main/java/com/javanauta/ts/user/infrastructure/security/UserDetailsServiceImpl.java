@@ -15,17 +15,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userPersister = userPersister;
     }
 
-    // Loads user details by email
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Searches for user in the database by email
-        User user = userPersister.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
-
-        // Creates and returns UserDetails based on the found user
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getEmail()) // Sets the username as the email
-                .password(user.getPassword()) // Sets the user's password
-                .build(); // Builds the UserDetails object
+    public UserDetails loadUserByUsername(String email) {
+        User user = userPersister.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
+        return new SecurityUser(user);
     }
 }

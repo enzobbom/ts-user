@@ -1,17 +1,13 @@
 package com.javanauta.ts.user.domain.model;
 
 import com.javanauta.ts.user.application.data.AddressData;
-import com.javanauta.ts.user.application.data.PhoneData;
 import com.javanauta.ts.user.application.data.CreateUserData;
+import com.javanauta.ts.user.application.data.PhoneData;
 import com.javanauta.ts.user.application.data.UpdateUserData;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -27,7 +23,7 @@ import java.util.UUID;
                 @UniqueConstraint(name = "uk_users_email", columnNames = "email")
         }
 )
-public class User implements UserDetails {
+public class User {
     @Id
     private UUID id;
 
@@ -55,16 +51,6 @@ public class User implements UserDetails {
             fetch = FetchType.LAZY
     )
     private Phone phone;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
 
     private User(String name, String email, String password) {
         this.id = UUID.randomUUID();
