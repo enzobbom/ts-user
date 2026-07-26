@@ -28,8 +28,6 @@ public class JwtUtil {
     public String generateToken(User user) {
         Date now = new Date();
 
-        // Add .issuer()?
-
         return Jwts.builder()
                 .subject(user.getId().toString())
                 .claim("email", user.getEmail())
