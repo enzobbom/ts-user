@@ -12,7 +12,7 @@ import java.util.UUID;
 public class SecurityContextPrincipalProvider implements PrincipalProvider {
 
     @Override
-    public UUID getUserId() {
+    public UUID getId() {
         return getAuthenticatedUser().id();
     }
 

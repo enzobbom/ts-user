@@ -49,12 +49,12 @@ public class UserService {
     }
 
     public User getUser() {
-        return getUserOrThrow(principalProvider.getUserId());
+        return getUserOrThrow(principalProvider.getId());
     }
 
     @Transactional
     public void deleteUser() {
-        User user = getUserOrThrow(principalProvider.getUserId());
+        User user = getUserOrThrow(principalProvider.getId());
         userPersister.delete(user);
 
         log.info("User {} deleted", user.getId());
@@ -62,7 +62,7 @@ public class UserService {
 
     @Transactional
     public User updateUser(UpdateUserData updateUserData) {
-        User userToUpdate = getUserOrThrow(principalProvider.getUserId());
+        User userToUpdate = getUserOrThrow(principalProvider.getId());
 
         if (updateUserData.password() != null) {
             updateUserData = new UpdateUserData(
@@ -81,7 +81,7 @@ public class UserService {
 
     @Transactional
     public Address updateAddress(AddressData addressData) {
-        User userToUpdateAddress = getUserOrThrow(principalProvider.getUserId());
+        User userToUpdateAddress = getUserOrThrow(principalProvider.getId());
         userToUpdateAddress.updateAddress(addressData);
 
         log.info("Address of User {} was updated", userToUpdateAddress.getId());
@@ -91,7 +91,7 @@ public class UserService {
 
     @Transactional
     public Phone updatePhone(PhoneData phoneData) {
-        User userToUpdatePhone = getUserOrThrow(principalProvider.getUserId());
+        User userToUpdatePhone = getUserOrThrow(principalProvider.getId());
         userToUpdatePhone.updatePhone(phoneData);
 
         log.info("Phone of User {} was updated", userToUpdatePhone.getId());
