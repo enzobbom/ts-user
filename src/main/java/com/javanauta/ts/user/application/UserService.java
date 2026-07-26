@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -47,12 +49,12 @@ public class UserService {
     }
 
     public User getUser() {
-        return getUserOrThrow(principalProvider.getEmail());
+        return getUserOrThrow(principalProvider.getUserId());
     }
 
     @Transactional
     public void deleteUser() {
-        User user = getUserOrThrow(principalProvider.getEmail());
+        User user = getUserOrThrow(principalProvider.getUserId());
         userPersister.delete(user);
 
         log.info("User {} deleted", user.getId());
@@ -60,7 +62,7 @@ public class UserService {
 
     @Transactional
     public User updateUser(UpdateUserData updateUserData) {
-        User userToUpdate = getUserOrThrow(principalProvider.getEmail());
+        User userToUpdate = getUserOrThrow(principalProvider.getUserId());
 
         if (updateUserData.password() != null) {
             updateUserData = new UpdateUserData(
@@ -79,7 +81,7 @@ public class UserService {
 
     @Transactional
     public Address updateAddress(AddressData addressData) {
-        User userToUpdateAddress = getUserOrThrow(principalProvider.getEmail());
+        User userToUpdateAddress = getUserOrThrow(principalProvider.getUserId());
         userToUpdateAddress.updateAddress(addressData);
 
         log.info("Address of User {} was updated", userToUpdateAddress.getId());
@@ -89,7 +91,7 @@ public class UserService {
 
     @Transactional
     public Phone updatePhone(PhoneData phoneData) {
-        User userToUpdatePhone = getUserOrThrow(principalProvider.getEmail());
+        User userToUpdatePhone = getUserOrThrow(principalProvider.getUserId());
         userToUpdatePhone.updatePhone(phoneData);
 
         log.info("Phone of User {} was updated", userToUpdatePhone.getId());
@@ -99,16 +101,12 @@ public class UserService {
 
     // internal helper/validation methods
 
-    private User getUserOrThrow(String email) {
-        return userPersister.findByEmail(email).orElseThrow(()
+    private User getUserOrThrow(UUID id) {
+        return userPersister.findById(id).orElseThrow(()
                 -> new ApplicationException(ServiceExceptionCode.USER_NOT_FOUND));
     }
 
     private void validateEmailNotExists(String email) {
-        if (emailExists(email)) { throw new ApplicationException(ServiceExceptionCode.USER_ALREADY_EXISTS); }
-    }
-
-    private boolean emailExists(String email) {
-        return userPersister.existsByEmail(email);
+        if (userPersister.existsByEmail(email)) { throw new ApplicationException(ServiceExceptionCode.USER_ALREADY_EXISTS); }
     }
 }
