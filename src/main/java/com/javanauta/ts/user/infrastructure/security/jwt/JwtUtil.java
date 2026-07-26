@@ -15,6 +15,9 @@ import java.util.Date;
 public class JwtUtil {
     private SecretKey signingKey;
 
+    @Value("${spring.application.name}")
+    private String issuer;
+
     @Value("${ts.jwt.secret}")
     private String secretKey;
 
@@ -29,6 +32,7 @@ public class JwtUtil {
         Date now = new Date();
 
         return Jwts.builder()
+                .issuer(issuer)
                 .subject(user.getId().toString())
                 .claim("email", user.getEmail())
                 .issuedAt(now)
