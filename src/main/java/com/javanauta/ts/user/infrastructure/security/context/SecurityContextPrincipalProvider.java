@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.infrastructure.security.principal;
+package com.javanauta.ts.user.infrastructure.security.context;
 
 import com.javanauta.ts.user.application.ports.out.security.PrincipalProvider;
 import com.javanauta.ts.user.infrastructure.security.authentication.AuthenticatedPrincipal;

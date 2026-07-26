@@ -1,5 +1,6 @@
 package com.javanauta.ts.user.infrastructure.security.config;
 
+import com.javanauta.ts.user.infrastructure.security.authentication.ForwardedIdentityFilter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +25,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     public static final String SECURITY_SCHEME = "bearerAuth";
     private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final ForwardedIdentityFilter forwardedIdentityFilter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,6 +43,9 @@ public class SecurityConfig {
                 .exceptionHandling(
                         exception
                                 -> exception.authenticationEntryPoint(authenticationEntryPoint))
+                .addFilterBefore(
+                        forwardedIdentityFilter,
+                        AnonymousAuthenticationFilter.class)
                 .build();
     }
 
