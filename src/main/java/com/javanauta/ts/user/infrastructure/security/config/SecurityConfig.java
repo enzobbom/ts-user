@@ -1,13 +1,10 @@
 package com.javanauta.ts.user.infrastructure.security.config;
 
-import com.javanauta.ts.user.infrastructure.security.JwtRequestFilter;
-import com.javanauta.ts.user.presentation.path.ApiPaths;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,66 +15,41 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @SecurityScheme(name = SecurityConfig.SECURITY_SCHEME, type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "bearer")
 public class SecurityConfig {
-
     public static final String SECURITY_SCHEME = "bearerAuth";
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
-    // JwtUtil and JwtAuthenticationEntryPoint instances injected by Spring
-    private final JwtRequestFilter jwtRequestFilter;
-    private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    // Constructor for dependency injection of JwtUtil and UserDetailsService
-    @Autowired
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter, AuthenticationEntryPoint jwtAuthenticationEntryPoint) {
-        this.jwtRequestFilter = jwtRequestFilter;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-    }
-
-    // Security filter configuration
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Creates a JwtRequestFilter instance using JwtUtil and UserDetailsService
-
-        http
-                .csrf(AbstractHttpConfigurer::disable) // Disables CSRF protection for REST APIs (not needed in stateless APIs)
-
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Sets session policy to stateless
-                )
-
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(jwtAuthenticationEntryPoint))
-
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/actuator/health").permitAll()
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(
+                        session
+                                -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers(HttpMethod.POST, ApiPaths.USERS_V1).permitAll()
-                        .requestMatchers(HttpMethod.POST, ApiPaths.AUTH_V1 + "/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, ApiPaths.CEP_V1 + "/**").permitAll()
-                        .anyRequest().authenticated() // Requires authentication for all other requests
+                        .requestMatchers("/login", "/users").permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Adds JWT filter before default authentication filter
-
-        // Returns the built security configuration
-        return http.build();
+                .exceptionHandling(
+                        exception
+                                -> exception.authenticationEntryPoint(authenticationEntryPoint))
+                .build();
     }
 
-    // Configures PasswordEncoder using BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Returns BCryptPasswordEncoder instance
+        return new BCryptPasswordEncoder();
     }
 
-    // Configures AuthenticationManager using AuthenticationConfiguration
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        // Gets and returns the AuthenticationManager
         return authenticationConfiguration.getAuthenticationManager();
     }
-
 }

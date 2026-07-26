@@ -1,8 +1,9 @@
-package com.javanauta.ts.user.infrastructure.security;
+package com.javanauta.ts.user.infrastructure.security.authentication;
 
 import com.javanauta.ts.user.application.data.AuthenticationResult;
 import com.javanauta.ts.user.application.data.LoginData;
 import com.javanauta.ts.user.application.ports.out.security.UserAuthenticator;
+import com.javanauta.ts.user.infrastructure.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,18 +19,27 @@ public class SpringSecurityUserAuthenticator implements UserAuthenticator {
 
     @Override
     public AuthenticationResult login(LoginData loginData) {
-        Authentication authentication;
         try {
-            authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginData.email(),
-                            loginData.password()));
+            Authentication authentication =
+                    authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    loginData.email(),
+                                    loginData.password()
+                            ));
 
+            SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+
+            String token = jwtUtil.generateToken(securityUser.getUser());
             return new AuthenticationResult(
-                    "Bearer " + jwtUtil.generateToken(authentication.getName()));
+                    securityUser.getId(),
+                    securityUser.getUsername(),
+                    token);
 
         } catch (BadCredentialsException e) {
-            return new AuthenticationResult(null);
+            return new AuthenticationResult(
+                    null,
+                    null,
+                    null);
         }
     }
 }

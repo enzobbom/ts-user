@@ -1,4 +1,4 @@
-package com.javanauta.ts.user.infrastructure.security;
+package com.javanauta.ts.user.infrastructure.security.password;
 
 import com.javanauta.ts.user.application.ports.out.security.UserPasswordEncoder;
 import lombok.RequiredArgsConstructor;

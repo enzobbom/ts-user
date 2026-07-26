@@ -47,11 +47,16 @@ public class AuthenticationController {
     })
     public ResponseEntity<SuccessResponse<LoginResponseDTO>> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         AuthenticationResult authenticationResult = userService.login(authenticationMapper.toData(loginRequestDTO));
+        LoginResponseDTO loginResponseDTO = authenticationMapper.toDTO(authenticationResult);
 
         HttpStatus httpCode = HttpStatus.OK;
         SuccessResponse<LoginResponseDTO> successResponse = new SuccessResponse<>(
                 httpCode.value(),
-                authenticationMapper.toDTO(authenticationResult));
+                new LoginResponseDTO(
+                        loginResponseDTO.userId(),
+                        loginResponseDTO.userEmail(),
+                        "Bearer " + loginResponseDTO.token())
+        );
 
         return ResponseEntity.status(httpCode).body(successResponse);
     }

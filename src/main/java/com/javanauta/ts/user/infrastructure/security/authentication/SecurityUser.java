@@ -1,6 +1,7 @@
-package com.javanauta.ts.user.infrastructure.security;
+package com.javanauta.ts.user.infrastructure.security.authentication;
 
 import com.javanauta.ts.user.domain.model.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
 public class SecurityUser implements UserDetails {
     private final User user;
 

@@ -23,7 +23,6 @@ public class UserService {
     private final UserPasswordEncoder passwordEncoder;
     private final UserAuthenticator userAuthenticator;
     private final PrincipalProvider principalProvider;
-    private static final String USER_NOT_FOUND_MSG = "User not found";
 
     @Transactional
     public User createUser(CreateUserData userData) {
