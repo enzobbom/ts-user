@@ -159,7 +159,7 @@ public class UserController {
     }
 
     @PatchMapping("/me/phone")
-    @Operation(summary = "Update current user's address", description = "Updates the authenticated user's phone")
+    @Operation(summary = "Update current user's phone", description = "Updates the authenticated user's phone")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Phone successfully updated"),
             @ApiResponse(responseCode = "401", description = "Authentication failed",
