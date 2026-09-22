@@ -21,7 +21,8 @@ public class JwtUtil {
     @Value("${ts.jwt.secret}")
     private String secretKey;
 
-    private static final long JWT_EXPIRATION_MS = 1000 * 60 * 60L;
+    @Value("${ts.jwt.expiration}")
+    private long jwtExpirationMs;
 
     @PostConstruct
     public void init() {
@@ -36,7 +37,7 @@ public class JwtUtil {
                 .subject(user.getId().toString())
                 .claim("email", user.getEmail())
                 .issuedAt(now)
-                .expiration(new Date(now.getTime() + JWT_EXPIRATION_MS))
+                .expiration(new Date(now.getTime() + jwtExpirationMs))
                 .signWith(signingKey)
                 .compact();
     }

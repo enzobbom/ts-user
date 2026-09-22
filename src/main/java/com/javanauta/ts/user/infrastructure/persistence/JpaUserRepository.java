@@ -9,12 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface JpaUserRepository extends JpaRepository<User, Long> {
+public interface JpaUserRepository extends JpaRepository<User, UUID> {
     boolean existsByEmail(String email);
     Optional<User> findByEmail(String email);
-    Optional<User> findById(UUID id);
-
-    @Transactional
-    void deleteByEmail(String email);
-    void deleteById(UUID id);
 }
