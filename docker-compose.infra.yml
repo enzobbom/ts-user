@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres:14-alpine
     networks:
-      - ts-user
+      - network
     ports:
       - "5432:5432"
     environment:
@@ -18,5 +18,5 @@ volumes:
   postgres_data:
 
 networks:
-  ts-user:
+  network:
     driver: bridge
